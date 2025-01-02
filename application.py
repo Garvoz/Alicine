@@ -54,250 +54,303 @@ if (search_titre != '') or (search_acteur != None) or (search_real != None) or (
 
     df_reponse = df_reponse.sort_values(by=['Note moyenne', 'Nb de votes'] , ascending=False).head(5).reset_index()
 
+
     if len(df_reponse) == 0:
         st.write('Aucun film ne correspond à votre recheche !')
 
     elif len(df_reponse) == 1:
+        reco = st.checkbox("Voir les meilleurs films similaires recommandés")
         st.image("https://image.tmdb.org/t/p/w500" + df_reponse.loc[0, 'Lien du poster'] )
         st.markdown("<h3>" + df_reponse.loc[0, 'Titre'] + "</h3>", unsafe_allow_html=True)
-        st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[0, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
-        st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[0, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
-        st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[0, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
-        st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[0, 'Genres']) + "</p>", unsafe_allow_html=True)
-        st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[0, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
-        if df_reponse.loc[0, 'Budget'] > 0:
-            st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[0, 'Budget']) + " $</p>", unsafe_allow_html=True)
-        st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
-        st.write(", ".join(df_reponse.loc[0, 'Liste acteurs'][:3]))  
-        st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
-        st.write(df_reponse.loc[0, 'Résumé'])
+        details = st.button("Détails", key = 11)
+        if details:
+            st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[0, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
+            st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[0, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+            st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[0, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
+            st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[0, 'Genres']) + "</p>", unsafe_allow_html=True)
+            st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[0, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
+            if df_reponse.loc[0, 'Budget'] > 0:
+                st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[0, 'Budget']) + " $</p>", unsafe_allow_html=True)
+            st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
+            st.write(", ".join(df_reponse.loc[0, 'Liste acteurs'][:3]))  
+            st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
+            st.write(df_reponse.loc[0, 'Résumé'])
+            
 
     elif len(df_reponse) == 2:
+
+        reco = st.radio('Pour quel films souhaitez vous voir les films similaires recommandés?', 
+                        [df_reponse.loc[0, 'Titre'], df_reponse.loc[1, 'Titre']],
+                        index = None, 
+                        horizontal = True)
 
         col21, col22 = st.columns(2)
 
         with col21:
             st.image("https://image.tmdb.org/t/p/w500" + df_reponse.loc[0, 'Lien du poster'] )
             st.markdown("<h3>" + df_reponse.loc[0, 'Titre'] + "</h3>", unsafe_allow_html=True)
-            st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[0, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[0, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[0, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[0, 'Genres']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[0, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
-            if df_reponse.loc[0, 'Budget'] > 0:
-                st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[0, 'Budget']) + " $</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
-            st.write(", ".join(df_reponse.loc[0, 'Liste acteurs'][:3]))  
-            st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
-            st.write(df_reponse.loc[0, 'Résumé'])
+            details1 = st.button("Détails", key = 21)
+            if details1:
+                st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[0, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[0, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[0, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[0, 'Genres']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[0, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
+                if df_reponse.loc[0, 'Budget'] > 0:
+                    st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[0, 'Budget']) + " $</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
+                st.write(", ".join(df_reponse.loc[0, 'Liste acteurs'][:3]))  
+                st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
+                st.write(df_reponse.loc[0, 'Résumé'])
         
         with col22:
             st.image("https://image.tmdb.org/t/p/w500" + df_reponse.loc[1, 'Lien du poster'] )
             st.markdown("<h3>" + df_reponse.loc[1, 'Titre'] + "</h3>", unsafe_allow_html=True)
-            st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[1, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[1, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[1, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[1, 'Genres']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[1, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
-            if df_reponse.loc[1, 'Budget'] > 0:
-                st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[1, 'Budget']) + " $</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
-            st.write(", ".join(df_reponse.loc[1, 'Liste acteurs'][:3]))  
-            st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
-            st.write(df_reponse.loc[1, 'Résumé'])
+            details2 = st.button("Détails", key = 22)
+            if details2:
+                st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[1, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[1, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[1, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[1, 'Genres']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[1, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
+                if df_reponse.loc[1, 'Budget'] > 0:
+                    st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[1, 'Budget']) + " $</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
+                st.write(", ".join(df_reponse.loc[1, 'Liste acteurs'][:3]))  
+                st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
+                st.write(df_reponse.loc[1, 'Résumé'])
 
     elif len(df_reponse) == 3:
+
+        reco = st.radio('Pour quel films souhaitez vous voir les films similaires recommandés?', 
+                        [df_reponse.loc[0, 'Titre'], df_reponse.loc[1, 'Titre'], df_reponse.loc[2, 'Titre']],
+                        index = None, 
+                        horizontal = True)
 
         col31, col32, col33 = st.columns(3)
 
         with col31:
             st.image("https://image.tmdb.org/t/p/w500" + df_reponse.loc[0, 'Lien du poster'] )
             st.markdown("<h3>" + df_reponse.loc[0, 'Titre'] + "</h3>", unsafe_allow_html=True)
-            st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[0, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[0, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[0, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[0, 'Genres']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[0, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
-            if df_reponse.loc[0, 'Budget'] > 0:
-                st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[0, 'Budget']) + " $</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
-            st.write(", ".join(df_reponse.loc[0, 'Liste acteurs'][:3]))  
-            st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
-            st.write(df_reponse.loc[0, 'Résumé'])
+            details1 = st.button("Détails", key = 31)
+            if details1:
+                st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[0, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[0, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[0, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[0, 'Genres']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[0, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
+                if df_reponse.loc[0, 'Budget'] > 0:
+                    st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[0, 'Budget']) + " $</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
+                st.write(", ".join(df_reponse.loc[0, 'Liste acteurs'][:3]))  
+                st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
+                st.write(df_reponse.loc[0, 'Résumé'])
     
         with col32:
             st.image("https://image.tmdb.org/t/p/w500" + df_reponse.loc[1, 'Lien du poster'] )
             st.markdown("<h3>" + df_reponse.loc[1, 'Titre'] + "</h3>", unsafe_allow_html=True)
-            st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[1, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[1, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[1, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[1, 'Genres']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[1, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
-            if df_reponse.loc[1, 'Budget'] > 0:
-                st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[1, 'Budget']) + " $</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
-            st.write(", ".join(df_reponse.loc[1, 'Liste acteurs'][:3]))  
-            st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
-            st.write(df_reponse.loc[1, 'Résumé'])
+            details2 = st.button("Détails", key = 32)
+            if details2:
+                st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[1, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[1, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[1, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[1, 'Genres']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[1, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
+                if df_reponse.loc[1, 'Budget'] > 0:
+                    st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[1, 'Budget']) + " $</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
+                st.write(", ".join(df_reponse.loc[1, 'Liste acteurs'][:3]))  
+                st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
+                st.write(df_reponse.loc[1, 'Résumé'])
 
         with col33:
             st.image("https://image.tmdb.org/t/p/w500" + df_reponse.loc[2, 'Lien du poster'] )
             st.markdown("<h3>" + df_reponse.loc[2, 'Titre'] + "</h3>", unsafe_allow_html=True)
-            st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[2, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[2, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[2, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[2, 'Genres']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[2, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
-            if df_reponse.loc[2, 'Budget'] > 0:
-                st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[2, 'Budget']) + " $</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
-            st.write(", ".join(df_reponse.loc[2, 'Liste acteurs'][:3]))  
-            st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
-            st.write(df_reponse.loc[2, 'Résumé'])
+            details3 = st.button("Détails", key = 33)
+            if details3:
+                st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[2, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[2, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[2, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[2, 'Genres']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[2, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
+                if df_reponse.loc[2, 'Budget'] > 0:
+                    st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[2, 'Budget']) + " $</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
+                st.write(", ".join(df_reponse.loc[2, 'Liste acteurs'][:3]))  
+                st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
+                st.write(df_reponse.loc[2, 'Résumé'])
 
     elif len(df_reponse) == 4:
+
+        reco = st.radio('Pour quel films souhaitez vous voir les films similaires recommandés?', 
+                        [df_reponse.loc[0, 'Titre'], df_reponse.loc[1, 'Titre'], df_reponse.loc[2, 'Titre'], df_reponse.loc[3, 'Titre']],
+                        index = None, 
+                        horizontal = True)
 
         col41, col42, col43, col44 = st.columns(4)
 
         with col41:
             st.image("https://image.tmdb.org/t/p/w500" + df_reponse.loc[0, 'Lien du poster'] )
             st.markdown("<h3 style='text-align: center;'>" + df_reponse.loc[0, 'Titre'] + "</h3>", unsafe_allow_html=True)
-            st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[0, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[0, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[0, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[0, 'Genres']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[0, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
-            if df_reponse.loc[0, 'Budget'] > 0:
-                st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[0, 'Budget']) + " $</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
-            st.write(", ".join(df_reponse.loc[0, 'Liste acteurs'][:3]))  
-            st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
-            st.write(df_reponse.loc[0, 'Résumé'])
+            details1 = st.button("Détails", key = 41)
+            if details1:
+                st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[0, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[0, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[0, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[0, 'Genres']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[0, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
+                if df_reponse.loc[0, 'Budget'] > 0:
+                    st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[0, 'Budget']) + " $</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
+                st.write(", ".join(df_reponse.loc[0, 'Liste acteurs'][:3]))  
+                st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
+                st.write(df_reponse.loc[0, 'Résumé'])
     
         with col42:
             st.image("https://image.tmdb.org/t/p/w500" + df_reponse.loc[1, 'Lien du poster'] )
             st.markdown("<h3 style='text-align: center;'>" + df_reponse.loc[1, 'Titre'] + "</h3>", unsafe_allow_html=True)
-            st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[1, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[1, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[1, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[1, 'Genres']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[1, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
-            if df_reponse.loc[1, 'Budget'] > 0:
-                st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[1, 'Budget']) + " $</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
-            st.write(", ".join(df_reponse.loc[1, 'Liste acteurs'][:3]))  
-            st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
-            st.write(df_reponse.loc[1, 'Résumé'])
+            details2 = st.button("Détails", key = 42)
+            if details2:
+                st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[1, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[1, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[1, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[1, 'Genres']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[1, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
+                if df_reponse.loc[1, 'Budget'] > 0:
+                    st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[1, 'Budget']) + " $</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
+                st.write(", ".join(df_reponse.loc[1, 'Liste acteurs'][:3]))  
+                st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
+                st.write(df_reponse.loc[1, 'Résumé'])
 
         with col43:
             st.image("https://image.tmdb.org/t/p/w500" + df_reponse.loc[2, 'Lien du poster'] )
             st.markdown("<h3 style='text-align: center;'>" + df_reponse.loc[2, 'Titre'] + "</h3>", unsafe_allow_html=True)
-            st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[2, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[2, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[2, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[2, 'Genres']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[2, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
-            if df_reponse.loc[2, 'Budget'] > 0:
-                st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[2, 'Budget']) + " $</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
-            st.write(", ".join(df_reponse.loc[2, 'Liste acteurs'][:3]))  
-            st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
-            st.write(df_reponse.loc[2, 'Résumé'])
+            details3 = st.button("Détails", key = 43)
+            if details3:
+                st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[2, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[2, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[2, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[2, 'Genres']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[2, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
+                if df_reponse.loc[2, 'Budget'] > 0:
+                    st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[2, 'Budget']) + " $</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
+                st.write(", ".join(df_reponse.loc[2, 'Liste acteurs'][:3]))  
+                st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
+                st.write(df_reponse.loc[2, 'Résumé'])
 
         with col44:
             st.image("https://image.tmdb.org/t/p/w500" + df_reponse.loc[3, 'Lien du poster'] )
             st.markdown("<h3 style='text-align: center;'>" + df_reponse.loc[3, 'Titre'] + "</h3>", unsafe_allow_html=True)
-            st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[3, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[3, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[3, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[3, 'Genres']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[3, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
-            if df_reponse.loc[3, 'Budget'] > 0:
-                st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[3, 'Budget']) + " $</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
-            st.write(", ".join(df_reponse.loc[3, 'Liste acteurs'][:3]))  
-            st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
-            st.write(df_reponse.loc[3, 'Résumé'])
+            details4 = st.button("Détails", key = 44)
+            if details4:
+                st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[3, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[3, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[3, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[3, 'Genres']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[3, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
+                if df_reponse.loc[3, 'Budget'] > 0:
+                    st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[3, 'Budget']) + " $</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
+                st.write(", ".join(df_reponse.loc[3, 'Liste acteurs'][:3]))  
+                st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
+                st.write(df_reponse.loc[3, 'Résumé'])
 
 
     elif len(df_reponse) > 4:
+
+        reco = st.radio('Pour quel films souhaitez vous voir les films similaires recommandés?', 
+                        [df_reponse.loc[0, 'Titre'], df_reponse.loc[1, 'Titre'], df_reponse.loc[2, 'Titre'], df_reponse.loc[3, 'Titre'], df_reponse.loc[4, 'Titre']],
+                        index = None, 
+                        horizontal = True)
 
         col51, col52, col53, col54, col55 = st.columns(5)
 
         with col51:
             st.image("https://image.tmdb.org/t/p/w500" + df_reponse.loc[0, 'Lien du poster'] )
             st.markdown("<h3 style='text-align: center;'>" + df_reponse.loc[0, 'Titre'] + "</h3>", unsafe_allow_html=True)
-            st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[0, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[0, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[0, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[0, 'Genres']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[0, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
-            if df_reponse.loc[0, 'Budget'] > 0:
-                st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[0, 'Budget']) + " $</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
-            st.write(", ".join(df_reponse.loc[0, 'Liste acteurs'][:3]))  
-            st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
-            st.write(df_reponse.loc[0, 'Résumé'])
-        
+            details1 = st.button("Détails", key = 51)
+            if details1:
+                st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[0, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[0, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[0, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[0, 'Genres']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[0, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
+                if df_reponse.loc[0, 'Budget'] > 0:
+                    st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[0, 'Budget']) + " $</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
+                st.write(", ".join(df_reponse.loc[0, 'Liste acteurs'][:3]))  
+                st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
+                st.write(df_reponse.loc[0, 'Résumé'])
+            
         with col52:
             st.image("https://image.tmdb.org/t/p/w500" + df_reponse.loc[1, 'Lien du poster'] )
             st.markdown("<h3 style='text-align: center;'>" + df_reponse.loc[1, 'Titre'] + "</h3>", unsafe_allow_html=True)
-            st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[1, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[1, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[1, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[1, 'Genres']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[1, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
-            if df_reponse.loc[1, 'Budget'] > 0:
-                st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[1, 'Budget']) + " $</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
-            st.write(", ".join(df_reponse.loc[1, 'Liste acteurs'][:3]))  
-            st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
-            st.write(df_reponse.loc[1, 'Résumé'])
+            details2 = st.button("Détails", key = 52)
+            if details2:
+                st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[1, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[1, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[1, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[1, 'Genres']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[1, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
+                if df_reponse.loc[1, 'Budget'] > 0:
+                    st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[1, 'Budget']) + " $</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
+                st.write(", ".join(df_reponse.loc[1, 'Liste acteurs'][:3]))  
+                st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
+                st.write(df_reponse.loc[1, 'Résumé'])
 
         with col53:
             st.image("https://image.tmdb.org/t/p/w500" + df_reponse.loc[2, 'Lien du poster'] )
             st.markdown("<h3 style='text-align: center;'>" + df_reponse.loc[2, 'Titre'] + "</h3>", unsafe_allow_html=True)
-            st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[2, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[2, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[2, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[2, 'Genres']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[2, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
-            if df_reponse.loc[2, 'Budget'] > 0:
-                st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[2, 'Budget']) + " $</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
-            st.write(", ".join(df_reponse.loc[2, 'Liste acteurs'][:3]))  
-            st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
-            st.write(df_reponse.loc[2, 'Résumé'])
+            details3 = st.button("Détails", key = 53)
+            if details3:
+                st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[2, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[2, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[2, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[2, 'Genres']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[2, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
+                if df_reponse.loc[2, 'Budget'] > 0:
+                    st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[2, 'Budget']) + " $</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
+                st.write(", ".join(df_reponse.loc[2, 'Liste acteurs'][:3]))  
+                st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
+                st.write(df_reponse.loc[2, 'Résumé'])
 
         with col54:
             st.image("https://image.tmdb.org/t/p/w500" + df_reponse.loc[3, 'Lien du poster'] )
             st.markdown("<h3 style='text-align: center;'>" + df_reponse.loc[3, 'Titre'] + "</h3>", unsafe_allow_html=True)
-            st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[3, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[3, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[3, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[3, 'Genres']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[3, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
-            if df_reponse.loc[3, 'Budget'] > 0:
-                st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[3, 'Budget']) + " $</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
-            st.write(", ".join(df_reponse.loc[3, 'Liste acteurs'][:3]))  
-            st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
-            st.write(df_reponse.loc[3, 'Résumé'])
+            details4 = st.button("Détails", key = 54)
+            if details4:
+                st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[3, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[3, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[3, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[3, 'Genres']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[3, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
+                if df_reponse.loc[3, 'Budget'] > 0:
+                    st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[3, 'Budget']) + " $</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
+                st.write(", ".join(df_reponse.loc[3, 'Liste acteurs'][:3]))  
+                st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
+                st.write(df_reponse.loc[3, 'Résumé'])
 
         with col55:
             st.image("https://image.tmdb.org/t/p/w500" + df_reponse.loc[4, 'Lien du poster'] )
             st.markdown("<h3 style='text-align: center;'>" + df_reponse.loc[4, 'Titre'] + "</h3>", unsafe_allow_html=True)
-            st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[4, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[4, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[4, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[4, 'Genres']) + "</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[4, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
-            if df_reponse.loc[4, 'Budget'] > 0:
-                st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[4, 'Budget']) + " $</p>", unsafe_allow_html=True)
-            st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
-            st.write(", ".join(df_reponse.loc[4, 'Liste acteurs'][:3]))  
-            st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
-            st.write(df_reponse.loc[4, 'Résumé'])
+            details5 = st.button("Détails", key = 55)
+            if details5:
+                st.markdown("<p><b>Date de sortie :</b> " + df_reponse.loc[4, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reponse.loc[4, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Note spectateurs :</b> " + str(df_reponse.loc[4, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reponse.loc[4, 'Genres']) + "</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Durée :</b> " + str(df_reponse.loc[4, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
+                if df_reponse.loc[4, 'Budget'] > 0:
+                    st.markdown("<p><b>Budget :</b> " + str(df_reponse.loc[4, 'Budget']) + " $</p>", unsafe_allow_html=True)
+                st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
+                st.write(", ".join(df_reponse.loc[4, 'Liste acteurs'][:3]))  
+                st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
+                st.write(df_reponse.loc[4, 'Résumé'])
 
 
 with st.sidebar:

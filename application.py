@@ -232,20 +232,21 @@ if (search_titre != '') or (search_acteur != None) or (search_real != None) or (
 
         col31, col32, col33, col34, col35 = st.columns(5)
 
-        with col31:                                 
-                st.image("https://image.tmdb.org/t/p/w500" + df_reco_g.loc[0, 'Lien du poster'] )
-                st.markdown("<h3>" + df_reco_g.loc[0, 'Titre'] + "</h3>", unsafe_allow_html=True)
-                st.markdown("<p><b>Date de sortie :</b> " + df_reco_g.loc[0, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
-                st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reco_g.loc[0, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
-                st.markdown("<p><b>Note spectateurs :</b> " + str(df_reco_g.loc[0, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
-                st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reco_g.loc[0, 'Genres']) + "</p>", unsafe_allow_html=True)
-                st.markdown("<p><b>Durée :</b> " + str(df_reco_g.loc[0, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
-                if df_reco_g.loc[0, 'Budget'] > 0:
-                    st.markdown("<p><b>Budget :</b> " + str(df_reco_g.loc[0, 'Budget']) + " $</p>", unsafe_allow_html=True)
-                st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
-                st.write(", ".join(df_reco_g.loc[0, 'Liste acteurs'][:3]))  
-                st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
-                st.write(df_reco_g.loc[0, 'Résumé'])
+        with col31:  
+                                            
+            st.image("https://image.tmdb.org/t/p/w500" + df_reco_g.loc[0, 'Lien du poster'] )
+            st.markdown("<h3>" + df_reco_g.loc[0, 'Titre'] + "</h3>", unsafe_allow_html=True)
+            st.markdown("<p><b>Date de sortie :</b> " + df_reco_g.loc[0, 'Date de sortie'] + "</p>", unsafe_allow_html=True)
+            st.markdown("<p><b>Réalisateur :</b> " + ", ".join(df_reco_g.loc[0, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+            st.markdown("<p><b>Note spectateurs :</b> " + str(df_reco_g.loc[0, 'Note moyenne']) + "/10</p>", unsafe_allow_html=True)
+            st.markdown("<p><b>Genre(s) :</b> " + ", ".join(df_reco_g.loc[0, 'Genres']) + "</p>", unsafe_allow_html=True)
+            st.markdown("<p><b>Durée :</b> " + str(df_reco_g.loc[0, 'Durée (minutes)']) + " minutes</p>", unsafe_allow_html=True)
+            if df_reco_g.loc[0, 'Budget'] > 0:
+                st.markdown("<p><b>Budget :</b> " + str(df_reco_g.loc[0, 'Budget']) + " $</p>", unsafe_allow_html=True)
+            st.markdown("<p><b>Acteurs principaux :</b></p>", unsafe_allow_html=True)
+            st.write(", ".join(df_reco_g.loc[0, 'Liste acteurs'][:3]))  
+            st.markdown("<p><b>Résumé en Anglais : </b></p>", unsafe_allow_html=True)      
+            st.write(df_reco_g.loc[0, 'Résumé'])
 
         with col32:                                 
                 st.image("https://image.tmdb.org/t/p/w500" + df_reco_g.loc[1, 'Lien du poster'] )

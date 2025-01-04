@@ -8,14 +8,19 @@ import pickle
 import base64
 from sklearn.neighbors import NearestNeighbors
 
+st.set_page_config( layout="wide")
 
-link2 = "./BD/movies.csv"
-movies = pd.read_csv(link2)
+@st.cache_data
+def load_movies():
+    movies = pd.read_csv("./BD/movies.csv")
+    return movies
+
+movies = load_movies()
+
 
 #Code Machine learning:
+@st.cache_resource
 def mes_recommendations(movie_title, nb_films=5):
-    if movie_title not in movies['Titre'].values:
-        return "Le film demandé n'est pas dans la base de données."
     
     features = movies.drop(columns=['ID','Titre','Langue Originale'])
     features['Décénnie'] *= 2.5
@@ -46,17 +51,18 @@ def mes_recommendations(movie_title, nb_films=5):
     recommended_french_movie_ids = filtered_movies.iloc[french_indices[0]]['ID'].values
 
     return {
-        "Recommandations générales": list(recommended_movie_ids),
-        "Recommandations en français": list(recommended_french_movie_ids)
+        "Recommandations générales" : list(recommended_movie_ids),
+        "Recommandations en français" : list(recommended_french_movie_ids)
     }
 
 
 # Etendre le contenu de la page.
-st.set_page_config( layout="wide")
+
+
 # st.st.cache_resource.clear() # st.cache_data ou st.cache_resource ou st.cache
 
 # Ajouter le logo en haut de la sidebar
-st.sidebar.image('./Alicine_logo.jpeg', use_container_width=True)
+st.sidebar.image('./alicine_logo.jpeg', use_container_width=True)
 # st.sidebar.image('Projet2PersoAZ/logoCineCreusois.jpeg', width=200) # je fige la taille de l'image
 
 
@@ -101,7 +107,7 @@ st.sidebar.image('./Alicine_logo.jpeg', use_container_width=True)
 
 # Gérer la bare des taches (sidebar):
 with st.sidebar:
-
+    
     page = option_menu(menu_title=None, options = ["Accueil", "Mieux nous connaitre", "Recherche personnalisée", "Films à l'affiche",  "Statistiques"])
 
     st.sidebar.markdown('<p style="color:white;">Besoin de nous contacter?</p>', unsafe_allow_html=True)
@@ -116,8 +122,8 @@ Nom_Cine = "ALICINÉ" # Ciné Creusois, CinéCéven, Le Cévenol (en ref aux Cé
 
 
 if page == "Accueil":
-  st.image("./accueil.jpeg")
-  st.title(f"Bienvenue dans l'univers {Nom_Cine} !") 
+  st.markdown("<h1 style='text-align: center;'>Bienvenue dans l'univers AliCiné !</h1>", unsafe_allow_html=True)
+  st.image("./accueil.jpeg", use_container_width=True)
   # autre proposition du subheader : Le cinéma s'offre une métamorphose digitale / Le cinéma se transforme et entre dans l'ère numérique
   st.subheader(f"Votre cinéma se modernise et vous dévoile son côté digital ") 
   st.write("""          
@@ -133,6 +139,7 @@ if page == "Accueil":
 
 
 if page == "Mieux nous connaitre":
+  st.image("./connaitre.jpg", use_container_width=True)
   with st.container(border=True):
     col1, col2 = st.columns(2)
     with col1:
@@ -166,6 +173,7 @@ BASE_URL = 'https://api.themoviedb.org/3/'
     # Votre clé API TMDb
 API_KEY = '3bca9c26909e582a5584220844dc20e1'
 # 1- Fonction qui permet de récupérer les films populaires à jour API TMDB:
+@st.cache_data
 def films_populaire():
     url = f'{BASE_URL}movie/popular?api_key={API_KEY}&language=fr-FR&page=1'
     response = requests.get(url)
@@ -173,12 +181,14 @@ def films_populaire():
     return data['results']
 
 # 2- Fonction pour récupérer les détails d'un film grace à un ID depuis API TMDB:
+@st.cache_data
 def details_films(movie_id):
     url = f'{BASE_URL}movie/{movie_id}?api_key={API_KEY}&language=fr-FR'
     response = requests.get(url)
     return response.json()
   
 # 3- Fonction qui permet de récupérer les bandes annonce grace à un ID depuis API TMDB:: 
+@st.cache_data
 def video_films(movie_id):
       url = f'{BASE_URL}movie/{movie_id}/videos?api_key={API_KEY}&language=fr-FR'
       response = requests.get(url)
@@ -186,23 +196,31 @@ def video_films(movie_id):
       return video["results"]
 
 # le nécéssaire pour la recherche personnalisée via API TMDB:
-link = "./BD/df_final.csv"
-df_final = pd.read_csv(link)
+@st.cache_data
+def load_final():
+    df_final = pd.read_csv("./BD/df_final.csv")
+    df_final['Genres'] = df_final['Genres'].apply(ast.literal_eval)
+    df_final['Liste acteurs'] = df_final['Liste acteurs'].apply(ast.literal_eval)
+    df_final['Réalisateurs'] = df_final['Réalisateurs'].apply(ast.literal_eval)
+    return df_final
 
-df_final['Genres'] = df_final['Genres'].apply(ast.literal_eval)
-df_final['Liste acteurs'] = df_final['Liste acteurs'].apply(ast.literal_eval)
-df_final['Réalisateurs'] = df_final['Réalisateurs'].apply(ast.literal_eval)
+df_final = load_final()
 
-with open('./BD/mes_listes.pkl', 'rb') as f:
-    acteurs = pickle.load(f)
-    reals = pickle.load(f)
-    genres = pickle.load(f)
-    decennie = pickle.load(f)
+@st.cache_data
+def pickl():
+    with open('./BD/mes_listes.pkl', 'rb') as f:
+        acteurs = pickle.load(f)
+        reals = pickle.load(f)
+        genres = pickle.load(f)
+        decennie = pickle.load(f)
+    return acteurs, reals, genres, decennie
+
+acteurs, reals, genres, decennie = pickl()
 
 
 if page == "Recherche personnalisée":
     st.markdown("<h1 style='text-align: center;'>Qu'est-ce qu'on regarde ce soir ?</h1>", unsafe_allow_html=True)
-    st.image("recherche.jpg", caption="Image centrée", use_container_width=True)
+    st.image("recherche.jpg", use_container_width=True)
 
         # Présentation du moteur de recherche :
         
@@ -382,29 +400,28 @@ if page == "Recherche personnalisée":
                     if pays and len(pays) > 0:
                         st.write(f"Pays d'origine : {pays[0]}")
   
-
         dico = {}
-
+        
         if len(df_reponse) > 0:
             if reco1 == True:
-                titre_reco = df_reponse.loc[0, 'Titre']
-                dico = mes_recommendations(titre_reco)
+                titre_reco1 = df_reponse.loc[0, 'Titre']
+                dico = mes_recommendations(titre_reco1)
             elif len(df_reponse) > 1:
                 if reco2 == True:
-                    titre_reco = df_reponse.loc[1, 'Titre']
-                    dico = mes_recommendations(titre_reco)
+                    titre_reco2 = df_reponse.loc[1, 'Titre']
+                    dico = mes_recommendations(titre_reco2)
                 elif len(df_reponse) > 2:
                     if reco3 == True:
-                        titre_reco = df_reponse.loc[2, 'Titre']
-                        dico = mes_recommendations(titre_reco)
+                        titre_reco3 = df_reponse.loc[2, 'Titre']
+                        dico = mes_recommendations(titre_reco3)
                     elif len(df_reponse) > 3:
                         if reco4 == True:
-                            titre_reco = df_reponse.loc[3, 'Titre']
-                            dico = mes_recommendations(titre_reco)
+                            titre_reco4 = df_reponse.loc[3, 'Titre']
+                            dico = mes_recommendations(titre_reco4)
                         elif len(df_reponse) > 4:
                             if reco5 == True:
-                                titre_reco = df_reponse.loc[4, 'Titre']
-                                dico = mes_recommendations(titre_reco)
+                                titre_reco5 = df_reponse.loc[4, 'Titre']
+                                dico = mes_recommendations(titre_reco5)
                 
         if len(dico.keys()) > 0: 
 
@@ -665,8 +682,8 @@ if page == "Recherche personnalisée":
 
 if page == "Films à l'affiche":
     # test interface utilisateur Streamlit
-    st.title("A l'affiche : ")    # "Les films populaires"
-
+    st.markdown("<h1 style='text-align: center;'>Films à l'affiche en ce moment</h1>", unsafe_allow_html=True)# "Les films populaires"
+    st.image("./affiche.jpg", use_container_width=True)
     # Récupérer les films populaires "data['results']"
     movies = films_populaire()
 
@@ -691,9 +708,9 @@ if page == "Films à l'affiche":
                   st.video(f"https://www.youtube.com/watch?v={videos[0]["key"]}")
 
 
-if page == "Statistique":
-  st.title("Voici quelques Statistique sur les films")
-  # st.image("https://www.code-couleur.com/images/listing/rose-lilas.jpg")
+if page == "Statistiques":
+  st.markdown("<h1 style='text-align: center;'>Quelques chiffres</h1>", unsafe_allow_html=True)
+  st.image("./statistiques.jpeg", use_container_width=True)
   col1, col2 = st.columns(2)
   
   with col1:

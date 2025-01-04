@@ -8,15 +8,21 @@ st.set_page_config(layout="wide")
 
 #Matrix pour le test : マトリックス
 
-link = "./BD/df_final.csv"
-link2 = "./BD/movies.csv"
+@st.cache_data
+def dataf():
+    link = "./BD/df_final.csv"
+    link2 = "./BD/movies.csv"
 
-df_final = pd.read_csv(link)
-movies = pd.read_csv(link2)
+    df_final = pd.read_csv(link)
+    movies = pd.read_csv(link2)
 
-df_final['Genres'] = df_final['Genres'].apply(ast.literal_eval)
-df_final['Liste acteurs'] = df_final['Liste acteurs'].apply(ast.literal_eval)
-df_final['Réalisateurs'] = df_final['Réalisateurs'].apply(ast.literal_eval)
+    df_final['Genres'] = df_final['Genres'].apply(ast.literal_eval)
+    df_final['Liste acteurs'] = df_final['Liste acteurs'].apply(ast.literal_eval)
+    df_final['Réalisateurs'] = df_final['Réalisateurs'].apply(ast.literal_eval)
+
+    return df_final, movies
+
+df_final, movies = dataf()
 
 #Fonction machine learning:
 def mes_recommendations(movie_title, nb_films=5):

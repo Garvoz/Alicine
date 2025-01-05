@@ -1,14 +1,33 @@
-import streamlit as st
-import requests
-from streamlit_option_menu import option_menu
-import pandas as pd
-import streamlit as st
 import ast
-import pickle
 import base64
+import pandas as pd
+import pickle
+import requests
 from sklearn.neighbors import NearestNeighbors
+import streamlit as st
+from streamlit_option_menu import option_menu
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
+warnings.filterwarnings("ignore", category=FutureWarning)
 
+# マトリックス = "matrix" pour frimer pendant la démo
+
+
+#Utilisation de toute la largeur de la page:
 st.set_page_config( layout="wide")
+
+
+
+#Import des 2 df et des listes en cache:
+@st.cache_data
+def load_final():
+    df_final = pd.read_csv("./BD/df_final.csv")
+    df_final['Genres'] = df_final['Genres'].apply(ast.literal_eval)
+    df_final['Liste acteurs'] = df_final['Liste acteurs'].apply(ast.literal_eval)
+    df_final['Réalisateurs'] = df_final['Réalisateurs'].apply(ast.literal_eval)
+    return df_final
+
+df_final = load_final()
 
 @st.cache_data
 def load_movies():
@@ -17,8 +36,49 @@ def load_movies():
 
 movies = load_movies()
 
+@st.cache_data
+def pickl():
+    with open('./BD/mes_listes.pkl', 'rb') as f:
+        acteurs = pickle.load(f)
+        reals = pickle.load(f)
+        genres = pickle.load(f)
+        decennie = pickle.load(f)
+    return acteurs, reals, genres, decennie
 
-#Code Machine learning:
+acteurs, reals, genres, decennie = pickl()
+
+
+
+#Fonctions pour récupérer les données des APIs en cache:
+BASE_URL = 'https://api.themoviedb.org/3/'
+API_KEY = '3bca9c26909e582a5584220844dc20e1'
+
+# 1- Fonction qui permet de récupérer les films populaires à jour API TMDB:
+@st.cache_data
+def films_populaire():
+    url = f'{BASE_URL}movie/popular?api_key={API_KEY}&language=fr-FR&page=1'
+    response = requests.get(url)
+    data = response.json()
+    return data['results']
+
+# 2- Fonction pour récupérer les détails d'un film grace à un ID depuis API TMDB:
+@st.cache_data
+def details_films(movie_id):
+    url = f'{BASE_URL}movie/{movie_id}?api_key={API_KEY}&language=fr-FR'
+    response = requests.get(url)
+    return response.json()
+  
+# 3- Fonction qui permet de récupérer les bandes annonce grace à un ID depuis API TMDB:: 
+@st.cache_data
+def video_films(movie_id):
+      url = f'{BASE_URL}movie/{movie_id}/videos?api_key={API_KEY}&language=fr-FR'
+      response = requests.get(url)
+      video = response.json()
+      return video["results"]
+
+
+
+#Définition du code Machine learning en cache:
 @st.cache_resource
 def mes_recommendations(movie_title, nb_films=5):
     
@@ -55,91 +115,63 @@ def mes_recommendations(movie_title, nb_films=5):
         "Recommandations en français" : list(recommended_french_movie_ids)
     }
 
-
-# Etendre le contenu de la page.
-
-
-# st.st.cache_resource.clear() # st.cache_data ou st.cache_resource ou st.cache
-
-# Ajouter le logo en haut de la sidebar
-st.sidebar.image('./alicine_logo.jpeg', use_container_width=True)
-# st.sidebar.image('Projet2PersoAZ/logoCineCreusois.jpeg', width=200) # je fige la taille de l'image
-
-
-# Pict_SB = './Images/falling_popcorn.jpeg'
-# Pict_fond = './Images/Meme_confort_maison.jpeg'
-
-# # Image Sidebar
-# with open(Pict_SB, "rb") as image_file:
-#     encoded_image = base64.b64encode(image_file.read()).decode()
-
-#     st.markdown(
-#         f"""
-#         <style>
-#         [data-testid="stSidebar"] > div:first-child {{
-#             background-image: url("data:image/jpeg;base64,{encoded_image}");
-#             background-size: cover;
-#         }}
-#         </style>
-#         """,
-#         unsafe_allow_html=True
-#     )
-
-# Image fond de site
-# with open(Pict_fond, "rb") as image_file:
-#     encoded_image2 = base64.b64encode(image_file.read()).decode()
-
-# template_htlm = f"""
-#         <style>
-#         body {{
-#         background-image: url(data:image/jpeg;base64,{encoded_image2});
-#         background-size: cover;
-#         background-repeat: no-repeat;
-#         background-position: center;
-#         overflow: hidden;
-#         display: flex;}}
-#         </style>
-#         """
-        
-# st.markdown(template_htlm, unsafe_allow_html=True)
+#Encode base64 de l'image de fond sidebar en cache:
+@st.cache_data
+def popcorn():
+    with open('./Images/falling_popcorn.jpeg', "rb") as f2:
+        encoded_image = base64.b64encode(f2.read()).decode()
+    return encoded_image
+encoded_image = popcorn()
 
 
 
-# Gérer la bare des taches (sidebar):
+#Mise en place de la sidebar:
 with st.sidebar:
+    st.sidebar.image('./Images/alicine_logo.jpeg', use_container_width=True)
+    st.markdown(
+    f"""
+    <style> 
+    [data-testid="stSidebar"] > div:first-child {{
+        background-image: url("data:image/jpeg;base64,{encoded_image}");
+        background-size: cover;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True)#Mise en place de l'image de fond avec du css
     
-    page = option_menu(menu_title=None, options = ["Accueil", "Mieux nous connaitre", "Recherche personnalisée", "Films à l'affiche",  "Statistiques"])
+    page = option_menu(menu_title=None, options = ["Accueil", "Mieux nous connaitre", "Recherche personnalisée", "Films à l'affiche",  "Statistiques"])#Menu déroulant pour la navigation
+        
+    st.sidebar.markdown(
+        """
+        <p style='background-color: #0E1117; color: white; padding: 10px; border-radius: 5px;'>
+            Besoin de nous contacter? <br><br>
+            contact@cine-creusois.com <br><br>
+            +33 5 55 25 25 25 (prix d'un appel local) <br><br>
+            Avenue d'auvergne, 23000 Gueret, France
+        </p>
+        """,
+        unsafe_allow_html=True)#Section contact avec css pour fond noir
+    
 
-    st.sidebar.markdown('<p style="color:white;">Besoin de nous contacter?</p>', unsafe_allow_html=True)
-    st.sidebar.markdown('<p style="color:white;">contact@cine-creusois.com</p>', unsafe_allow_html=True)
-    # st.sidebar.markdown("[contact@cine-creusois.com](mailto:contact@cine-creusois.com)")
-    st.sidebar.markdown("<p style='color:white;'>+33 5 55 25 25 25 (prix d'un appel local)</p>", unsafe_allow_html=True)
-    st.sidebar.markdown("<p style='color:white;'>Avenue d'auvergne, 23000 Gueret, France</p>", unsafe_allow_html=True)
-
-
-
-Nom_Cine = "ALICINÉ" # Ciné Creusois, CinéCéven, Le Cévenol (en ref aux Cévennes la chaine de montagne),
-
-
+#Mise en place page d'accueil:
 if page == "Accueil":
   st.markdown("<h1 style='text-align: center;'>Bienvenue dans l'univers AliCiné !</h1>", unsafe_allow_html=True)
-  st.image("./accueil.jpeg", use_container_width=True)
-  # autre proposition du subheader : Le cinéma s'offre une métamorphose digitale / Le cinéma se transforme et entre dans l'ère numérique
-  st.subheader(f"Votre cinéma se modernise et vous dévoile son côté digital ") 
+  st.image("./Images/accueil.jpeg", use_container_width=True)
+  st.subheader("Votre cinéma se modernise et entre dans l'ère numérique !") 
   st.write("""          
            Nous sommes heureux de vous offrir une sélection de films variée et de qualité, dans un cadre convivial et chaleureux. 
            """)
   st.write("""          
-           Découvrez notre programmation, les films à l'affiche, nos recommandations personnalisées et les statistiques intéressantes. 
+           Grâce à cette application, venez découvrir notre système de recommandation de films, 
            """)
+  st.write("mais aussi les films à l'affiche et les statistiques intéressantes. ")
   st.write("Et surtout bonne navigation!")
 
-   # image Ciné à ajouter
 
 
-
+#Mise en place de la page "mieux nous connaitre":
 if page == "Mieux nous connaitre":
-  st.image("./connaitre.jpg", use_container_width=True)
+  st.image("./Images/connaitre.jpg", use_container_width=True)
   with st.container(border=True):
     col1, col2 = st.columns(2)
     with col1:
@@ -166,80 +198,32 @@ if page == "Mieux nous connaitre":
                 """) 
 
 
-            # Fonction pour API(s):
-
-      # URL de base de l'API TMDb
-BASE_URL = 'https://api.themoviedb.org/3/'
-    # Votre clé API TMDb
-API_KEY = '3bca9c26909e582a5584220844dc20e1'
-# 1- Fonction qui permet de récupérer les films populaires à jour API TMDB:
-@st.cache_data
-def films_populaire():
-    url = f'{BASE_URL}movie/popular?api_key={API_KEY}&language=fr-FR&page=1'
-    response = requests.get(url)
-    data = response.json()
-    return data['results']
-
-# 2- Fonction pour récupérer les détails d'un film grace à un ID depuis API TMDB:
-@st.cache_data
-def details_films(movie_id):
-    url = f'{BASE_URL}movie/{movie_id}?api_key={API_KEY}&language=fr-FR'
-    response = requests.get(url)
-    return response.json()
-  
-# 3- Fonction qui permet de récupérer les bandes annonce grace à un ID depuis API TMDB:: 
-@st.cache_data
-def video_films(movie_id):
-      url = f'{BASE_URL}movie/{movie_id}/videos?api_key={API_KEY}&language=fr-FR'
-      response = requests.get(url)
-      video = response.json()
-      return video["results"]
-
-# le nécéssaire pour la recherche personnalisée via API TMDB:
-@st.cache_data
-def load_final():
-    df_final = pd.read_csv("./BD/df_final.csv")
-    df_final['Genres'] = df_final['Genres'].apply(ast.literal_eval)
-    df_final['Liste acteurs'] = df_final['Liste acteurs'].apply(ast.literal_eval)
-    df_final['Réalisateurs'] = df_final['Réalisateurs'].apply(ast.literal_eval)
-    return df_final
-
-df_final = load_final()
-
-@st.cache_data
-def pickl():
-    with open('./BD/mes_listes.pkl', 'rb') as f:
-        acteurs = pickle.load(f)
-        reals = pickle.load(f)
-        genres = pickle.load(f)
-        decennie = pickle.load(f)
-    return acteurs, reals, genres, decennie
-
-acteurs, reals, genres, decennie = pickl()
 
 
+#Gros de l'appli: mise en place de la recherche personnalisée:
 if page == "Recherche personnalisée":
     st.markdown("<h1 style='text-align: center;'>Qu'est-ce qu'on regarde ce soir ?</h1>", unsafe_allow_html=True)
-    st.image("recherche.jpg", use_container_width=True)
+    st.image("./Images/recherche.jpg", use_container_width=True)
 
-        # Présentation du moteur de recherche :
-        
+    # Moteur de recherche :
+    st.markdown("<h2 style='text-align: center;'>Cherchez un film qui vous a plus, on vous recommandera un film similaire qui pourrait vous plaire !</h2>", unsafe_allow_html=True)
     search_titre = st.text_input('Recherche par titre :', '')
     col1, col2 = st.columns(2)
     with col1:
         search_acteur = st.selectbox('Recherche par acteur :', acteurs, index=None, placeholder="Choisissez un acteur...")
         search_real = st.selectbox('Recherche par réalisateur :', reals, index=None, placeholder="Choisissez un réalisateur...")
+        search_fr = st.checkbox("Recherche dans  les films Français uniquement", key="fr")
     with col2:
         search_genre = st.selectbox('Recherche par genre', genres, index=None, placeholder="Choisissez un genre...")
         search_decennie = st.selectbox('Recherche par décénnie', decennie, index=None, placeholder="Choisissez une décénnie...")
 
 
-  # code de recherche : 
+  # Code qui filtre la base de données en fonction de la recherche : 
     df_reponse = df_final.copy()
 
     if search_titre != '':
-         # traitement de la recherche en string, case = False  ==> ignore la casse, 
-         df_reponse = df_reponse[df_reponse['Titres possibles'].str.contains(search_titre, case=False)]
+         # La colonne 'Titres possibles' contient des listes mais avec read_csv ces listes sont traitées en string, on les laisse comme ça pour pouvoir faire un str.contains sur la recherche 
+         df_reponse = df_reponse[df_reponse['Titres possibles'].str.contains(search_titre, case=False)]#case = False  ==> ignore la casse
     if search_acteur != None:
         df_reponse = df_reponse[df_reponse['Liste acteurs'].apply(lambda x: search_acteur in x)]
     if search_real != None:
@@ -248,15 +232,17 @@ if page == "Recherche personnalisée":
         df_reponse = df_reponse[df_reponse['Genres'].apply(lambda x: search_genre in x)]
     if search_decennie != None:
         df_reponse = df_reponse[df_reponse['Décénnie'] == search_decennie]
+    if search_fr == True:
+        df_reponse = df_reponse[df_reponse['Langue Originale'] == 'fr']
 
+    #df_reponse ne contient plus que les films filtrés par les recherches, on ne prends que les 5 meilleures notes:
     df_reponse = df_reponse.sort_values(by=['Note moyenne', 'Nb de votes'] , ascending=False).head().reset_index()
-    # movies = df_reponse.copy()
 
-# il affiche scoobido car c'est le premier film du df lors du test de df_reponse.loc[0, 'Titre']
+    #Ajout d'une condition pour que la suite ne soit affichée que si une recherche à été entrée:
     if (search_titre != '') or (search_acteur != None) or (search_real != None) or (search_genre != None) or (search_decennie != None):
         st.markdown("<h2 style='text-align: center;'>Films les mieux notés selon votre recherche :</h2>", unsafe_allow_html=True)
-  # Affichage des résultats filtrés : 
-    
+  
+        # Affichage des résultats filtrés : 
         col21, col22, col23, col24, col25 = st.columns(5)
         with col21:
             if len(df_reponse) == 0:
@@ -275,7 +261,7 @@ if page == "Recherche personnalisée":
                 st.write(f"Date de sortie : {infos.get('release_date', '')}")
                 st.write(f"Note spectateur : {infos.get('vote_average', '')}/10")
 
-                if st.button(f"Voir les détails de {film_titre}", key=str(id1)):
+                if st.button(f"Voir les détails de {film_titre}", key = str(id1)):
                     st.write(f"Synopsis : {infos.get('overview', '')}")
                     st.write(f"Durée : {infos.get('runtime', '')} minutes")
 
@@ -287,7 +273,7 @@ if page == "Recherche personnalisée":
                     if pays and len(pays) > 0:
                         st.write(f"Pays d'origine : {pays[0]}")
 
-                    if videos and len(videos) > 0:
+                    if len(videos) > 0:
                         video_key = videos[0].get('key', '')
                         if video_key:
                             st.video(f"https://www.youtube.com/watch?v={video_key}")
@@ -319,6 +305,11 @@ if page == "Recherche personnalisée":
                     pays = infos.get('origin_country', [])
                     if pays and len(pays) > 0:
                         st.write(f"Pays d'origine : {pays[0]}")
+
+                    if len(videos) > 0:
+                        video_key = videos[0].get('key', '')
+                        if video_key:
+                            st.video(f"https://www.youtube.com/watch?v={video_key}")
                         
         with col23:
             if len(df_reponse) > 2:
@@ -345,7 +336,12 @@ if page == "Recherche personnalisée":
 
                     pays = infos.get('origin_country', [])
                     if pays and len(pays) > 0:
-                        st.write(f"Pays d'origine : {pays[0]}")            
+                        st.write(f"Pays d'origine : {pays[0]}")  
+
+                    if len(videos) > 0:
+                        video_key = videos[0].get('key', '')
+                        if video_key:
+                            st.video(f"https://www.youtube.com/watch?v={video_key}")          
 
         with col24:
             if len(df_reponse) > 3:
@@ -374,6 +370,11 @@ if page == "Recherche personnalisée":
                     if pays and len(pays) > 0:
                         st.write(f"Pays d'origine : {pays[0]}")
 
+                    if len(videos) > 0:
+                        video_key = videos[0].get('key', '')
+                        if video_key:
+                            st.video(f"https://www.youtube.com/watch?v={video_key}")
+
         with col25:
             if len(df_reponse) > 4:
                 id5 = df_reponse.loc[4, 'ID']
@@ -399,6 +400,11 @@ if page == "Recherche personnalisée":
                     pays = infos.get('origin_country', [])
                     if pays and len(pays) > 0:
                         st.write(f"Pays d'origine : {pays[0]}")
+
+                    if len(videos) > 0:
+                        video_key = videos[0].get('key', '')
+                        if video_key:
+                            st.video(f"https://www.youtube.com/watch?v={video_key}")
   
         dico = {}
         
@@ -456,6 +462,11 @@ if page == "Recherche personnalisée":
                     if pays and len(pays) > 0:
                         st.write(f"Pays d'origine : {pays[0]}")
 
+                    if len(videos) > 0:
+                        video_key = videos[0].get('key', '')
+                        if video_key:
+                            st.video(f"https://www.youtube.com/watch?v={video_key}")
+
             with col32:      
                 id32 = df_reco_g.loc[1, 'ID']
                 film_titre = df_reco_g.loc[1, 'Titre']  # On récupère directement le titre
@@ -479,6 +490,11 @@ if page == "Recherche personnalisée":
                     pays = infos.get('origin_country', [])
                     if pays and len(pays) > 0:
                         st.write(f"Pays d'origine : {pays[0]}")
+
+                    if len(videos) > 0:
+                        video_key = videos[0].get('key', '')
+                        if video_key:
+                            st.video(f"https://www.youtube.com/watch?v={video_key}")
 
             with col33:  
                 id33 = df_reco_g.loc[2, 'ID']
@@ -504,6 +520,11 @@ if page == "Recherche personnalisée":
                     if pays and len(pays) > 0:
                         st.write(f"Pays d'origine : {pays[0]}")
 
+                    if len(videos) > 0:
+                        video_key = videos[0].get('key', '')
+                        if video_key:
+                            st.video(f"https://www.youtube.com/watch?v={video_key}")
+
             with col34:    
                 id34 = df_reco_g.loc[3, 'ID']
                 film_titre = df_reco_g.loc[3, 'Titre']  # On récupère directement le titre
@@ -528,6 +549,11 @@ if page == "Recherche personnalisée":
                     if pays and len(pays) > 0:
                         st.write(f"Pays d'origine : {pays[0]}")
 
+                    if len(videos) > 0:
+                        video_key = videos[0].get('key', '')
+                        if video_key:
+                            st.video(f"https://www.youtube.com/watch?v={video_key}")
+
             with col35: 
                 id35 = df_reco_g.loc[4, 'ID']
                 film_titre = df_reco_g.loc[4, 'Titre']  # On récupère directement le titre
@@ -551,6 +577,11 @@ if page == "Recherche personnalisée":
                     pays = infos.get('origin_country', [])
                     if pays and len(pays) > 0:
                         st.write(f"Pays d'origine : {pays[0]}")
+
+                    if len(videos) > 0:
+                        video_key = videos[0].get('key', '')
+                        if video_key:
+                            st.video(f"https://www.youtube.com/watch?v={video_key}")
 
             st.markdown("<h2 style='text-align: center;'>Si vous voulez un film Français : </h2>", unsafe_allow_html=True)
 
@@ -580,6 +611,11 @@ if page == "Recherche personnalisée":
                     if pays and len(pays) > 0:
                         st.write(f"Pays d'origine : {pays[0]}")
 
+                    if len(videos) > 0:
+                        video_key = videos[0].get('key', '')
+                        if video_key:
+                            st.video(f"https://www.youtube.com/watch?v={video_key}")
+
             with col42:     
                 id42 = df_reco_f.loc[1, 'ID']
                 film_titre = df_reco_f.loc[1, 'Titre']  # On récupère directement le titre
@@ -603,6 +639,11 @@ if page == "Recherche personnalisée":
                     pays = infos.get('origin_country', [])
                     if pays and len(pays) > 0:
                         st.write(f"Pays d'origine : {pays[0]}")
+                    
+                    if len(videos) > 0:
+                        video_key = videos[0].get('key', '')
+                        if video_key:
+                            st.video(f"https://www.youtube.com/watch?v={video_key}")
 
 
             with col43:  
@@ -629,6 +670,11 @@ if page == "Recherche personnalisée":
                     if pays and len(pays) > 0:
                         st.write(f"Pays d'origine : {pays[0]}")
 
+                    if len(videos) > 0:
+                        video_key = videos[0].get('key', '')
+                        if video_key:
+                            st.video(f"https://www.youtube.com/watch?v={video_key}")
+
 
             with col44:  
                 id44 = df_reco_f.loc[3, 'ID']
@@ -653,6 +699,11 @@ if page == "Recherche personnalisée":
                     pays = infos.get('origin_country', [])
                     if pays and len(pays) > 0:
                         st.write(f"Pays d'origine : {pays[0]}")
+
+                    if len(videos) > 0:
+                        video_key = videos[0].get('key', '')
+                        if video_key:
+                            st.video(f"https://www.youtube.com/watch?v={video_key}")
 
 
 
@@ -680,44 +731,45 @@ if page == "Recherche personnalisée":
                     if pays and len(pays) > 0:
                         st.write(f"Pays d'origine : {pays[0]}")
 
+                    if len(videos) > 0:
+                        video_key = videos[0].get('key', '')
+                        if video_key:
+                            st.video(f"https://www.youtube.com/watch?v={video_key}")
+
+# Mise en place de la page 'Films à l'affiche':
 if page == "Films à l'affiche":
-    # test interface utilisateur Streamlit
     st.markdown("<h1 style='text-align: center;'>Films à l'affiche en ce moment</h1>", unsafe_allow_html=True)# "Les films populaires"
-    st.image("./affiche.jpg", use_container_width=True)
-    # Récupérer les films populaires "data['results']"
-    movies = films_populaire()
+    st.image("./Images/affiche.jpg", use_container_width=True)
+
+    films = films_populaire()
 
     # Afficher la liste des films avec le détail de l'affiche:
     cols = st.columns(5)  # Créer 5 colonnes pour les 5 affiches
-    for i, movie in enumerate(movies[:5]):
+    for i, movie in enumerate(films[:5]):
       with cols[i]:
-              st.image(f"https://image.tmdb.org/t/p/w500{movie['poster_path']}", width=200)
-              st.subheader(movie['title'])
-              # st.write(f':['tagline']')
-              st.write(f"Date de sortie : {movie['release_date']}")
-              st.write(f"Note spéctateur : {movie['vote_average']}/10")
-              
-              
-              if st.button(f"Voir les détails de {movie['title']}", key=movie['id']):
-                  infos = details_films(movie['id'])
-                  videos= video_films(movie['id'])   # Ajoutée
-                  st.write(f"**Synopsis :** {infos['overview']}")
-                  st.write(f"**Durée :** {infos['runtime']} minutes")
-                  st.write(f"**Genres :** {', '.join([genre['name'] for genre in infos['genres']])}")
-                  st.write(f"**Pays d'origine :** {infos['origin_country'][0]}")
-                  st.video(f"https://www.youtube.com/watch?v={videos[0]["key"]}")
+            st.image(f"https://image.tmdb.org/t/p/w500{movie['poster_path']}", width=200)
+            st.subheader(movie['title'])
+            # st.write(f':['tagline']')
+            st.write(f"Date de sortie : {movie['release_date']}")
+            st.write(f"Note spéctateur : {movie['vote_average']}/10")
+            
+            
+            if st.button(f"Voir les détails de {movie['title']}", key=movie['id']):
+                infos = details_films(movie['id'])
+                videos= video_films(movie['id'])   # Ajoutée
+                st.write(f"**Synopsis :** {infos['overview']}")
+                st.write(f"**Durée :** {infos['runtime']} minutes")
+                st.write(f"**Genres :** {', '.join([genre['name'] for genre in infos['genres']])}")
+                st.write(f"**Pays d'origine :** {infos['origin_country'][0]}")
+                if len(videos) > 0:
+                    st.video(f"https://www.youtube.com/watch?v={videos[0]["key"]}")
+                else:
+                    st.write("Pas de bande annonce diponible pour ce film")
+                
 
 
 if page == "Statistiques":
   st.markdown("<h1 style='text-align: center;'>Quelques chiffres</h1>", unsafe_allow_html=True)
-  st.image("./statistiques.jpeg", use_container_width=True)
+  st.image("./Images/statistiques.jpeg", use_container_width=True)
   col1, col2 = st.columns(2)
   
-  with col1:
-    st.header("Présentation par genre")
-    # st.image('C:\Users\ibtis\Desktop\VS_Code\Quetes\Stream_Lit\photos\Présentation_genres.jpg')
-
-
-  # test : en plus vu l'indentation décalé cette selectbox apparait dans toute les sidebarres
-  Liste = [' ', 'Tom', 'Tom Hanks', 'Tom Cruise', 'Tom Hardy', 'Tom bétise', 'Tom zoulou', 'Chico', 'charlotte', 'princess Charlotte']
-  st.selectbox("Quels sont vos personnages favoris ?", Liste, placeholder="Selectionnez un acteur...")  

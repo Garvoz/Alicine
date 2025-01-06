@@ -14,15 +14,14 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 
 
 #Utilisation de toute la largeur de la page:
-st.set_page_config( layout="wide")
-
+st.set_page_config( layout="wide", page_title = "AliCiné", page_icon= "./Images/Logo.jpeg")
 
 
 #Import des 2 df et des listes en cache:
 @st.cache_data
 def load_final():
     df_final = pd.read_csv("./BD/df_final.csv")
-    df_final['Genres'] = df_final['Genres'].apply(ast.literal_eval)
+    df_final['Genres'] = df_final['Genres'].apply(ast.literal_eval)#Les listes se load en str, on les remets en liste direct à l'import
     df_final['Liste acteurs'] = df_final['Liste acteurs'].apply(ast.literal_eval)
     df_final['Réalisateurs'] = df_final['Réalisateurs'].apply(ast.literal_eval)
     return df_final
@@ -30,7 +29,7 @@ def load_final():
 df_final = load_final()
 
 @st.cache_data
-def load_movies():
+def load_movies():# Movies correspon dau df filtré sur les colonnes du ML avec les données normalisées
     movies = pd.read_csv("./BD/movies.csv")
     return movies
 
@@ -38,7 +37,7 @@ movies = load_movies()
 
 @st.cache_data
 def pickl():
-    with open('./BD/mes_listes.pkl', 'rb') as f:
+    with open('./BD/mes_listes.pkl', 'rb') as f: #Ces listes sont les élément uniques de chaque catégorie pour le menu déroulant des st.selectbox
         acteurs = pickle.load(f)
         reals = pickle.load(f)
         genres = pickle.load(f)
@@ -151,36 +150,41 @@ with st.sidebar:
         </p>
         """,
         unsafe_allow_html=True)#Section contact avec css pour fond noir
-    
+    # Pour avoir un lien cliquable : st.sidebar.markdown("[contact@cine-creusois.com](mailto:contact@cine-creusois.com)")
 
 #Mise en place page d'accueil:
 if page == "Accueil":
-  st.markdown("<h1 style='text-align: center;'>Bienvenue dans l'univers AliCiné !</h1>", unsafe_allow_html=True)
-  st.image("./Images/accueil.jpeg", use_container_width=True)
-  st.subheader("Votre cinéma se modernise et entre dans l'ère numérique !") 
-  st.write("""          
+    st.markdown("<h1 style='text-align: center;'>Bienvenue dans l'univers AliCiné !</h1>", unsafe_allow_html=True)#Code HTML et CSS pour centrer un texte, sera utilisé souvent
+    col1, col2, col3 = st.columns([2, 10, 2])#Code pour donner du poid à une colonne plus qu'aux autres
+    with col2:
+        st.image("./Images/accueil.jpeg",  use_container_width=True)
+    st.subheader("Votre cinéma se modernise et entre dans l'ère numérique !") 
+    st.write("""          
            Nous sommes heureux de vous offrir une sélection de films variée et de qualité, dans un cadre convivial et chaleureux. 
            """)
-  st.write("""          
+    st.write("""          
            Grâce à cette application, venez découvrir notre système de recommandation de films, 
            """)
-  st.write("mais aussi les films à l'affiche et les statistiques intéressantes. ")
-  st.write("Et surtout bonne navigation!")
+    st.write("mais aussi les films à l'affiche et les statistiques intéressantes. ")
+    st.write("Et surtout bonne navigation!")
 
 
 
 #Mise en place de la page "mieux nous connaitre":
 if page == "Mieux nous connaitre":
-  st.image("./Images/connaitre.jpg", use_container_width=True)
-  with st.container(border=True):
-    col1, col2 = st.columns(2)
-    with col1:
-      st.subheader("Nos Missions:")
-      st.write("""
-                - Diversité cinématographique : Nous vous proposons une programmation diversifiée, alliant cinéma francophone et anglophone ceci pour répondre aux besoin de tous nos spéctateurs.
-                - Accessibilité : des projections proposeées pour répondre à tous les gouts et tous les âges. Nous vous proposons des séances aux familles, aux jeunes et aux cinéphiles agéris (confirmés).
-                - Événements spéciaux : Nous organisons des avant-premières, des projections cultes. Et grâce à notre étroite collaboration avec 'Ecole et Cinéma' nous nous nous investissons dans la promotion des films Film Art et Essai et organisons aussi des 'Ciné-débats' et invitons des intervenants de qualité ")
-                """)
+    
+    col1, col2, col3 = st.columns([2, 10, 2])
+    with col2:
+        st.image("./Images/connaitre.jpg",  use_container_width=True)
+    with st.container(border=True):
+        col1, col2 = st.columns(2)
+        with col1:
+            st.subheader("Nos Missions:")
+            st.write("""
+                    - Diversité cinématographique : Nous vous proposons une programmation diversifiée, alliant cinéma francophone et anglophone ceci pour répondre aux besoin de tous nos spéctateurs.
+                    - Accessibilité : des projections proposeées pour répondre à tous les gouts et tous les âges. Nous vous proposons des séances aux familles, aux jeunes et aux cinéphiles agéris (confirmés).
+                    - Événements spéciaux : Nous organisons des avant-premières, des projections cultes. Et grâce à notre étroite collaboration avec 'Ecole et Cinéma' nous nous nous investissons dans la promotion des films Film Art et Essai et organisons aussi des 'Ciné-débats' et invitons des intervenants de qualité ")
+                    """)
     with col2:
       st.subheader("Nos engagements:")
       st.write("""
@@ -203,7 +207,7 @@ if page == "Mieux nous connaitre":
 #Gros de l'appli: mise en place de la recherche personnalisée:
 if page == "Recherche personnalisée":
     st.markdown("<h1 style='text-align: center;'>Qu'est-ce qu'on regarde ce soir ?</h1>", unsafe_allow_html=True)
-    st.image("./Images/recherche.jpg", use_container_width=True)
+    st.image("./Images/recherche.jpg", use_container_width=True)# Celle la c'est la meilleure je la laisse en grand!
 
     # Moteur de recherche :
     st.markdown("<h2 style='text-align: center;'>Cherchez un film qui vous a plus, on vous recommandera un film similaire qui pourrait vous plaire !</h2>", unsafe_allow_html=True)
@@ -239,11 +243,12 @@ if page == "Recherche personnalisée":
     df_reponse = df_reponse.sort_values(by=['Note moyenne', 'Nb de votes'] , ascending=False).head().reset_index()
 
     #Ajout d'une condition pour que la suite ne soit affichée que si une recherche à été entrée:
-    if (search_titre != '') or (search_acteur != None) or (search_real != None) or (search_genre != None) or (search_decennie != None):
+    if (search_titre != '') or (search_acteur != None) or (search_real != None) or (search_genre != None) or (search_decennie != None) or (search_fr == True):
         st.markdown("<h2 style='text-align: center;'>Films les mieux notés selon votre recherche :</h2>", unsafe_allow_html=True)
   
         # Affichage des résultats filtrés : 
         col21, col22, col23, col24, col25 = st.columns(5)
+
         with col21:
             if len(df_reponse) == 0:
                 st.markdown('<p><b>Aucun film ne correspond à votre recherche !:</b> ')
@@ -259,9 +264,12 @@ if page == "Recherche personnalisée":
                 reco1 = st.checkbox("**Voir les meilleurs films similaires recommandés:**", key=21)
                 st.markdown("<h3 style='text-align: center;'>" + infos.get('original_title', '') + "</h3>", unsafe_allow_html=True)
                 st.write(f"Date de sortie : {infos.get('release_date', '')}")
-                st.write(f"Note spectateur : {infos.get('vote_average', '')}/10")
+                st.write(f"Note spectateur : {round(infos.get('vote_average', ''), 1)}/10")
 
                 if st.button(f"Voir les détails de {film_titre}", key = str(id1)):
+                    st.markdown("<p>Réalisateur : " + ", ".join(df_reponse.loc[0, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                    st.markdown("<p>Acteurs principaux :</p>", unsafe_allow_html=True)
+                    st.write(", ".join(df_reponse.loc[0, 'Liste acteurs'][:3]))
                     st.write(f"Synopsis : {infos.get('overview', '')}")
                     st.write(f"Durée : {infos.get('runtime', '')} minutes")
 
@@ -290,11 +298,14 @@ if page == "Recherche personnalisée":
                     st.image(f"https://image.tmdb.org/t/p/w500{infos['poster_path']}")
                 reco2 = st.checkbox("**Voir les meilleurs films similaires recommandés:**", key=22)
 
-                st.subheader(infos.get('original_title', ''))
+                st.markdown("<h3 style='text-align: center;'>" + infos.get('original_title', '') + "</h3>", unsafe_allow_html=True)
                 st.write(f"Date de sortie : {infos.get('release_date', '')}")
-                st.write(f"Note spectateur : {infos.get('vote_average', '')}/10")
+                st.write(f"Note spectateur : {round(infos.get('vote_average', ''), 1)}/10")
 
                 if st.button(f"Voir les détails de {film_titre}", key=str(id2)):
+                    st.markdown("<p>Réalisateur : " + ", ".join(df_reponse.loc[1, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                    st.markdown("<p>Acteurs principaux :</p>", unsafe_allow_html=True)
+                    st.write(", ".join(df_reponse.loc[1, 'Liste acteurs'][:3]))
                     st.write(f"Synopsis : {infos.get('overview', '')}")
                     st.write(f"Durée : {infos.get('runtime', '')} minutes")
 
@@ -322,11 +333,14 @@ if page == "Recherche personnalisée":
                     st.image(f"https://image.tmdb.org/t/p/w500{infos['poster_path']}")
                 reco3 = st.checkbox("Voir les meilleurs films similaires recommandés:", key=23)
 
-                st.subheader(infos.get('original_title', ''))
+                st.markdown("<h3 style='text-align: center;'>" + infos.get('original_title', '') + "</h3>", unsafe_allow_html=True)
                 st.write(f"Date de sortie : {infos.get('release_date', '')}")
-                st.write(f"Note spectateur : {infos.get('vote_average', '')}/10")
+                st.write(f"Note spectateur : {round(infos.get('vote_average', ''), 1)}/10")
 
                 if st.button(f"Voir les détails de {film_titre}", key=str(id3)):
+                    st.markdown("<p>Réalisateur : " + ", ".join(df_reponse.loc[2, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                    st.markdown("<p>Acteurs principaux :</p>", unsafe_allow_html=True)
+                    st.write(", ".join(df_reponse.loc[2, 'Liste acteurs'][:3]))
                     st.write(f"Synopsis : {infos.get('overview', '')}")
                     st.write(f"Durée : {infos.get('runtime', '')} minutes")
 
@@ -354,11 +368,14 @@ if page == "Recherche personnalisée":
                     st.image(f"https://image.tmdb.org/t/p/w500{infos['poster_path']}")
                 reco4 = st.checkbox("Voir les meilleurs films similaires recommandés:", key=24)
 
-                st.subheader(infos.get('original_title', ''))
+                st.markdown("<h3 style='text-align: center;'>" + infos.get('original_title', '') + "</h3>", unsafe_allow_html=True)
                 st.write(f"Date de sortie : {infos.get('release_date', '')}")
-                st.write(f"Note spectateur : {infos.get('vote_average', '')}/10")
+                st.write(f"Note spectateur : {round(infos.get('vote_average', ''), 1)}/10")
 
                 if st.button(f"Voir les détails de {film_titre}", key=str(id4)):
+                    st.markdown("<p>Réalisateur : " + ", ".join(df_reponse.loc[3, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                    st.markdown("<p>Acteurs principaux :</p>", unsafe_allow_html=True)
+                    st.write(", ".join(df_reponse.loc[3, 'Liste acteurs'][:3]))
                     st.write(f"Synopsis : {infos.get('overview', '')}")
                     st.write(f"Durée : {infos.get('runtime', '')} minutes")
 
@@ -385,11 +402,14 @@ if page == "Recherche personnalisée":
                 if infos.get('poster_path'): 
                     st.image(f"https://image.tmdb.org/t/p/w500{infos['poster_path']}")
                 reco5 = st.checkbox("Voir les meilleurs films similaires recommandés:", key=25)
-                st.subheader(infos.get('original_title', ''))
+                st.markdown("<h3 style='text-align: center;'>" + infos.get('original_title', '') + "</h3>", unsafe_allow_html=True)
                 st.write(f"Date de sortie : {infos.get('release_date', '')}")
-                st.write(f"Note spectateur : {infos.get('vote_average', '')}/10")
+                st.write(f"Note spectateur : {round(infos.get('vote_average', ''), 1)}/10")
 
                 if st.button(f"Voir les détails de {film_titre}", key=str(id5)):
+                    st.markdown("<p>Réalisateur : " + ", ".join(df_reponse.loc[4, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                    st.markdown("<p>Acteurs principaux :</p>", unsafe_allow_html=True)
+                    st.write(", ".join(df_reponse.loc[4, 'Liste acteurs'][:3]))
                     st.write(f"Synopsis : {infos.get('overview', '')}")
                     st.write(f"Durée : {infos.get('runtime', '')} minutes")
 
@@ -446,11 +466,14 @@ if page == "Recherche personnalisée":
                                                 
                 if infos.get('poster_path'): 
                     st.image(f"https://image.tmdb.org/t/p/w500{infos['poster_path']}")
-                st.subheader(infos.get('original_title', ''))
+                st.markdown("<h3 style='text-align: center;'>" + infos.get('original_title', '') + "</h3>", unsafe_allow_html=True)
                 st.write(f"Date de sortie : {infos.get('release_date', '')}")
-                st.write(f"Note spectateur : {infos.get('vote_average', '')}/10")
+                st.write(f"Note spectateur : {round(infos.get('vote_average', ''), 1)}/10")
 
                 if st.button(f"Voir les détails de {film_titre}", key=31):
+                    st.markdown("<p>Réalisateur : " + ", ".join(df_reco_g.loc[0, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                    st.markdown("<p>Acteurs principaux :</p>", unsafe_allow_html=True)
+                    st.write(", ".join(df_reco_g.loc[0, 'Liste acteurs'][:3]))
                     st.write(f"Synopsis : {infos.get('overview', '')}")
                     st.write(f"Durée : {infos.get('runtime', '')} minutes")
 
@@ -475,11 +498,14 @@ if page == "Recherche personnalisée":
                                                 
                 if infos.get('poster_path'): 
                     st.image(f"https://image.tmdb.org/t/p/w500{infos['poster_path']}")
-                st.subheader(infos.get('original_title', ''))
+                st.markdown("<h3 style='text-align: center;'>" + infos.get('original_title', '') + "</h3>", unsafe_allow_html=True)
                 st.write(f"Date de sortie : {infos.get('release_date', '')}")
-                st.write(f"Note spectateur : {infos.get('vote_average', '')}/10")
+                st.write(f"Note spectateur : {round(infos.get('vote_average', ''), 1)}/10")
 
                 if st.button(f"Voir les détails de {film_titre}", key=32):
+                    st.markdown("<p>Réalisateur : " + ", ".join(df_reco_g.loc[1, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                    st.markdown("<p>Acteurs principaux :</p>", unsafe_allow_html=True)
+                    st.write(", ".join(df_reco_g.loc[1, 'Liste acteurs'][:3]))
                     st.write(f"Synopsis : {infos.get('overview', '')}")
                     st.write(f"Durée : {infos.get('runtime', '')} minutes")
 
@@ -504,11 +530,14 @@ if page == "Recherche personnalisée":
                                                 
                 if infos.get('poster_path'): 
                     st.image(f"https://image.tmdb.org/t/p/w500{infos['poster_path']}")
-                st.subheader(infos.get('original_title', ''))
+                st.markdown("<h3 style='text-align: center;'>" + infos.get('original_title', '') + "</h3>", unsafe_allow_html=True)
                 st.write(f"Date de sortie : {infos.get('release_date', '')}")
-                st.write(f"Note spectateur : {infos.get('vote_average', '')}/10")
+                st.write(f"Note spectateur : {round(infos.get('vote_average', ''), 1)}/10")
 
                 if st.button(f"Voir les détails de {film_titre}", key=33):
+                    st.markdown("<p>Réalisateur : " + ", ".join(df_reco_g.loc[2, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                    st.markdown("<p>Acteurs principaux :</p>", unsafe_allow_html=True)
+                    st.write(", ".join(df_reco_g.loc[2, 'Liste acteurs'][:3]))
                     st.write(f"Synopsis : {infos.get('overview', '')}")
                     st.write(f"Durée : {infos.get('runtime', '')} minutes")
 
@@ -533,11 +562,14 @@ if page == "Recherche personnalisée":
                                                 
                 if infos.get('poster_path'): 
                     st.image(f"https://image.tmdb.org/t/p/w500{infos['poster_path']}")
-                st.subheader(infos.get('original_title', ''))
+                st.markdown("<h3 style='text-align: center;'>" + infos.get('original_title', '') + "</h3>", unsafe_allow_html=True)
                 st.write(f"Date de sortie : {infos.get('release_date', '')}")
-                st.write(f"Note spectateur : {infos.get('vote_average', '')}/10")
+                st.write(f"Note spectateur : {round(infos.get('vote_average', ''), 1)}/10")
 
                 if st.button(f"Voir les détails de {film_titre}", key=34):
+                    st.markdown("<p>Réalisateur : " + ", ".join(df_reco_g.loc[3, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                    st.markdown("<p>Acteurs principaux :</p>", unsafe_allow_html=True)
+                    st.write(", ".join(df_reco_g.loc[3, 'Liste acteurs'][:3]))
                     st.write(f"Synopsis : {infos.get('overview', '')}")
                     st.write(f"Durée : {infos.get('runtime', '')} minutes")
 
@@ -562,11 +594,14 @@ if page == "Recherche personnalisée":
                                                 
                 if infos.get('poster_path'): 
                     st.image(f"https://image.tmdb.org/t/p/w500{infos['poster_path']}")
-                st.subheader(infos.get('original_title', ''))
+                st.markdown("<h3 style='text-align: center;'>" + infos.get('original_title', '') + "</h3>", unsafe_allow_html=True)
                 st.write(f"Date de sortie : {infos.get('release_date', '')}")
-                st.write(f"Note spectateur : {infos.get('vote_average', '')}/10")
+                st.write(f"Note spectateur : {round(infos.get('vote_average', ''), 1)}/10")
 
                 if st.button(f"Voir les détails de {film_titre}", key=35):
+                    st.markdown("<p>Réalisateur : " + ", ".join(df_reco_g.loc[4, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                    st.markdown("<p>Acteurs principaux :</p>", unsafe_allow_html=True)
+                    st.write(", ".join(df_reco_g.loc[4, 'Liste acteurs'][:3]))
                     st.write(f"Synopsis : {infos.get('overview', '')}")
                     st.write(f"Durée : {infos.get('runtime', '')} minutes")
 
@@ -595,11 +630,14 @@ if page == "Recherche personnalisée":
                                                 
                 if infos.get('poster_path'): 
                     st.image(f"https://image.tmdb.org/t/p/w500{infos['poster_path']}")
-                st.subheader(infos.get('original_title', ''))
+                st.markdown("<h3 style='text-align: center;'>" + infos.get('original_title', '') + "</h3>", unsafe_allow_html=True)
                 st.write(f"Date de sortie : {infos.get('release_date', '')}")
-                st.write(f"Note spectateur : {infos.get('vote_average', '')}/10")
+                st.write(f"Note spectateur : {round(infos.get('vote_average', ''), 1)}/10")
 
                 if st.button(f"Voir les détails de {film_titre}", key=41):
+                    st.markdown("<p>Réalisateur : " + ", ".join(df_reco_f.loc[0, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                    st.markdown("<p>Acteurs principaux :</p>", unsafe_allow_html=True)
+                    st.write(", ".join(df_reco_f.loc[0, 'Liste acteurs'][:3]))
                     st.write(f"Synopsis : {infos.get('overview', '')}")
                     st.write(f"Durée : {infos.get('runtime', '')} minutes")
 
@@ -624,11 +662,14 @@ if page == "Recherche personnalisée":
                                                 
                 if infos.get('poster_path'): 
                     st.image(f"https://image.tmdb.org/t/p/w500{infos['poster_path']}")
-                st.subheader(infos.get('original_title', ''))
+                st.markdown("<h3 style='text-align: center;'>" + infos.get('original_title', '') + "</h3>", unsafe_allow_html=True)
                 st.write(f"Date de sortie : {infos.get('release_date', '')}")
-                st.write(f"Note spectateur : {infos.get('vote_average', '')}/10")
+                st.write(f"Note spectateur : {round(infos.get('vote_average', ''), 1)}/10")
 
                 if st.button(f"Voir les détails de {film_titre}", key=42):
+                    st.markdown("<p>Réalisateur : " + ", ".join(df_reco_f.loc[1, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                    st.markdown("<p>Acteurs principaux :</p>", unsafe_allow_html=True)
+                    st.write(", ".join(df_reco_f.loc[1, 'Liste acteurs'][:3]))
                     st.write(f"Synopsis : {infos.get('overview', '')}")
                     st.write(f"Durée : {infos.get('runtime', '')} minutes")
 
@@ -654,11 +695,14 @@ if page == "Recherche personnalisée":
                                                 
                 if infos.get('poster_path'): 
                     st.image(f"https://image.tmdb.org/t/p/w500{infos['poster_path']}")
-                st.subheader(infos.get('original_title', ''))
+                st.markdown("<h3 style='text-align: center;'>" + infos.get('original_title', '') + "</h3>", unsafe_allow_html=True)
                 st.write(f"Date de sortie : {infos.get('release_date', '')}")
-                st.write(f"Note spectateur : {infos.get('vote_average', '')}/10")
+                st.write(f"Note spectateur : {round(infos.get('vote_average', ''), 1)}/10")
 
                 if st.button(f"Voir les détails de {film_titre}", key=43):
+                    st.markdown("<p>Réalisateur : " + ", ".join(df_reco_f.loc[2, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                    st.markdown("<p>Acteurs principaux :</p>", unsafe_allow_html=True)
+                    st.write(", ".join(df_reco_f.loc[2, 'Liste acteurs'][:3]))
                     st.write(f"Synopsis : {infos.get('overview', '')}")
                     st.write(f"Durée : {infos.get('runtime', '')} minutes")
 
@@ -684,11 +728,14 @@ if page == "Recherche personnalisée":
                                                 
                 if infos.get('poster_path'): 
                     st.image(f"https://image.tmdb.org/t/p/w500{infos['poster_path']}")
-                st.subheader(infos.get('original_title', ''))
+                st.markdown("<h3 style='text-align: center;'>" + infos.get('original_title', '') + "</h3>", unsafe_allow_html=True)
                 st.write(f"Date de sortie : {infos.get('release_date', '')}")
-                st.write(f"Note spectateur : {infos.get('vote_average', '')}/10")
+                st.write(f"Note spectateur : {round(infos.get('vote_average', ''), 1)}/10")
 
                 if st.button(f"Voir les détails de {film_titre}", key=44):
+                    st.markdown("<p>Réalisateur : " + ", ".join(df_reco_f.loc[3, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                    st.markdown("<p>Acteurs principaux :</p>", unsafe_allow_html=True)
+                    st.write(", ".join(df_reco_f.loc[3, 'Liste acteurs'][:3]))
                     st.write(f"Synopsis : {infos.get('overview', '')}")
                     st.write(f"Durée : {infos.get('runtime', '')} minutes")
 
@@ -715,11 +762,14 @@ if page == "Recherche personnalisée":
                                                 
                 if infos.get('poster_path'): 
                     st.image(f"https://image.tmdb.org/t/p/w500{infos['poster_path']}")
-                st.subheader(infos.get('original_title', ''))
+                st.markdown("<h3 style='text-align: center;'>" + infos.get('original_title', '') + "</h3>", unsafe_allow_html=True)
                 st.write(f"Date de sortie : {infos.get('release_date', '')}")
-                st.write(f"Note spectateur : {infos.get('vote_average', '')}/10")
+                st.write(f"Note spectateur : {round(infos.get('vote_average', ''), 1)}/10")
 
                 if st.button(f"Voir les détails de {film_titre}", key=45):
+                    st.markdown("<p>Réalisateur : " + ", ".join(df_reco_f.loc[4, 'Réalisateurs']) + "</p>", unsafe_allow_html=True)
+                    st.markdown("<p>Acteurs principaux :</p>", unsafe_allow_html=True)
+                    st.write(", ".join(df_reco_f.loc[4, 'Liste acteurs'][:3]))
                     st.write(f"Synopsis : {infos.get('overview', '')}")
                     st.write(f"Durée : {infos.get('runtime', '')} minutes")
 
@@ -739,7 +789,9 @@ if page == "Recherche personnalisée":
 # Mise en place de la page 'Films à l'affiche':
 if page == "Films à l'affiche":
     st.markdown("<h1 style='text-align: center;'>Films à l'affiche en ce moment</h1>", unsafe_allow_html=True)# "Les films populaires"
-    st.image("./Images/affiche.jpg", use_container_width=True)
+    col1, col2, col3 = st.columns([2, 10, 2])#Code pour donner du poid à une colonne plus qu'aux autres
+    with col2:
+        st.image("./Images/affiche.jpg",  use_container_width=True)
 
     films = films_populaire()
 
@@ -769,7 +821,8 @@ if page == "Films à l'affiche":
 
 
 if page == "Statistiques":
-  st.markdown("<h1 style='text-align: center;'>Quelques chiffres</h1>", unsafe_allow_html=True)
-  st.image("./Images/statistiques.jpeg", use_container_width=True)
-  col1, col2 = st.columns(2)
+    st.markdown("<h1 style='text-align: center;'>Quelques chiffres</h1>", unsafe_allow_html=True)
+    col1, col2, col3 = st.columns([2, 10, 2])#Code pour donner du poid à une colonne plus qu'aux autres
+    with col2:
+        st.image("./Images/statistiques.jpeg",  use_container_width=True)
   

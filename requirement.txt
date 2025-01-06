@@ -1,0 +1,11 @@
+import ast
+import base64
+import pandas as pd
+import pickle
+import requests
+from sklearn.neighbors import NearestNeighbors
+import streamlit as st
+from streamlit_option_menu import option_menu
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
+warnings.filterwarnings("ignore", category=FutureWarning)

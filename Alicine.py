@@ -20,7 +20,7 @@ st.set_page_config( layout="wide", page_title = "AliCiné", page_icon= "./Images
 #Import des 2 df et des listes en cache:
 @st.cache_data
 def load_final():
-    df_final = pd.read_csv("./BD/df_final.csv")
+    df_final = pd.read_csv("./BD_streamlit/df_final.csv")
     df_final['Genres'] = df_final['Genres'].apply(ast.literal_eval)#Les listes se load en str, on les remets en liste direct à l'import
     df_final['Liste acteurs'] = df_final['Liste acteurs'].apply(ast.literal_eval)
     df_final['Réalisateurs'] = df_final['Réalisateurs'].apply(ast.literal_eval)
@@ -30,14 +30,14 @@ df_final = load_final()
 
 @st.cache_data
 def load_movies():# Movies correspon dau df filtré sur les colonnes du ML avec les données normalisées
-    movies = pd.read_csv("./BD/movies.csv")
+    movies = pd.read_csv("./BD_streamlit/movies.csv")
     return movies
 
 movies = load_movies()
 
 @st.cache_data
 def pickl():
-    with open('./BD/mes_listes.pkl', 'rb') as f: #Ces listes sont les élément uniques de chaque catégorie pour le menu déroulant des st.selectbox
+    with open('./BD_streamlit/mes_listes.pkl', 'rb') as f: #Ces listes sont les élément uniques de chaque catégorie pour le menu déroulant des st.selectbox
         acteurs = pickle.load(f)
         reals = pickle.load(f)
         genres = pickle.load(f)

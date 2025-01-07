@@ -207,7 +207,9 @@ if page == "Mieux nous connaitre":
 #Gros de l'appli: mise en place de la recherche personnalisée:
 if page == "Recherche personnalisée":
     st.markdown("<h1 style='text-align: center;'>Qu'est-ce qu'on regarde ce soir ?</h1>", unsafe_allow_html=True)
-    st.image("./Images/recherche.jpg", use_container_width=True)# Celle la c'est la meilleure je la laisse en grand!
+    col1, col2, col3 = st.columns([2, 10, 2])#Code pour donner du poid à une colonne plus qu'aux autres
+    with col2:
+        st.image("./Images/recherche.jpg",  use_container_width=True)
 
     # Moteur de recherche :
     st.markdown("<h2 style='text-align: center;'>Cherchez un film qui vous a plus, on vous recommandera un film similaire qui pourrait vous plaire !</h2>", unsafe_allow_html=True)
@@ -799,11 +801,11 @@ if page == "Films à l'affiche":
     cols = st.columns(5)  # Créer 5 colonnes pour les 5 affiches
     for i, movie in enumerate(films[:5]):
       with cols[i]:
-            st.image(f"https://image.tmdb.org/t/p/w500{movie['poster_path']}", width=200)
-            st.subheader(movie['title'])
+            st.image(f"https://image.tmdb.org/t/p/w500{movie['poster_path']}")
+            st.markdown(f"<h1 style='text-align: center;'>{movie['title']}</h1>", unsafe_allow_html=True)
             # st.write(f':['tagline']')
             st.write(f"Date de sortie : {movie['release_date']}")
-            st.write(f"Note spéctateur : {movie['vote_average']}/10")
+            st.write(f"Note spéctateur : {round(movie['vote_average'], 1)}/10")
             
             
             if st.button(f"Voir les détails de {movie['title']}", key=movie['id']):
@@ -825,4 +827,79 @@ if page == "Statistiques":
     col1, col2, col3 = st.columns([2, 10, 2])#Code pour donner du poid à une colonne plus qu'aux autres
     with col2:
         st.image("./Images/statistiques.jpeg",  use_container_width=True)
+
+    st.markdown("<h2 style='text-align: center;'>Voici quelques statistiques sorties de notre base de donnée Aliciné, nous espérons que vous les trouverez intéressantes! N'hésitez pas à nous faire part de vos souhait si vous souhaitez en apprendre plus sur la superbe sélection que nous avons faite pour vous! A vos stats!</h2>", unsafe_allow_html=True)
+              
+    with st.container(border=True):
+        col1, col2 = st.columns(2)
+        with col1:
+            st.image("./Images/acteurs.png",  use_container_width=True)
+
+        with col2:
+            st.markdown("""<h1 style='text-align: center;'> 
+            COCORICO!!
+                     
+            Nous pouvons voir que selon notre base de donnée Aliciné
+                     
+            L'acteur ayant tourné le plus de film depuis 1970 est nontre 
+                     
+            cher M.Gérard Depardieu! 
+                     
+            Un grand bravo à lui pour cette formaidable carrière!
+                     
+            On occultera volontairement le fait qu'il est le seul acteur 
+                     
+            français dans ce top 7...
+
+            """, unsafe_allow_html=True)
+
+    with st.container(border=True):
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("""<h1 style='text-align: center;'> 
+            Ah le Parrain! 
+                     
+            Que de scènes emblématiques! C'est donc le film qui recoit 
+                        
+            la meilleure note de notre sélection.
+                     
+            On remarquera que les 4 meilleures notes sont pour 4 drames, 
+                        
+            ce qui prouve bien notre amour de la tristesse et la désolation. 
+                  
+            Haut les coeurs!
+
+            Pas de films français à se mettre sous la dent dans ce top.
+                        
+            Quel dommage !
+
+            Surtout quand on connait l'extraordinaire qualité de notre cinéma,
+
+            spécialement dans la catégorie "drames"...  
+
+            """, unsafe_allow_html=True)
+
+        with col2:
+            st.image("./Images/films.png",  use_container_width=True)
+
+    with st.container(border=True):
+        col1, col2 = st.columns(2)
+        with col1:
+            st.image("./Images/durée.png",  use_container_width=True)
+
+        with col2:
+            st.markdown("""<h1 style='text-align: center;'> 
+            Place aux rides et à l'expérience !!!
+                        
+            On constate que les acteurs prennent de l'âge au fil du temps, 
+                        
+            en revanche les films restent fidèles à leur format de 100 mins environ. 
+                        
+            Les producteurs misent beaucoup plus sur des stars "vintage ". 
+                        
+            Un choix qui prouve qu'en cinéma comme en vin, l'âge a du goût. 
+
+            """, unsafe_allow_html=True)
+                     
+        
   

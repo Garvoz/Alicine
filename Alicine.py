@@ -819,6 +819,72 @@ if page == "Films à l'affiche":
                     st.video(f"https://www.youtube.com/watch?v={videos[0]["key"]}")
                 else:
                     st.write("Pas de bande annonce diponible pour ce film")
+
+    cols = st.columns(5)  # Créer 5 colonnes pour les 5 affiches
+    for i, movie in enumerate(films[5 : 10]):
+      with cols[i]:
+            st.image(f"https://image.tmdb.org/t/p/w500{movie['poster_path']}")
+            st.markdown(f"<h1 style='text-align: center;'>{movie['title']}</h1>", unsafe_allow_html=True)
+            # st.write(f':['tagline']')
+            st.write(f"Date de sortie : {movie['release_date']}")
+            st.write(f"Note spéctateur : {round(movie['vote_average'], 1)}/10")
+            
+            
+            if st.button(f"Voir les détails de {movie['title']}", key=movie['id']):
+                infos = details_films(movie['id'])
+                videos= video_films(movie['id'])   # Ajoutée
+                st.write(f"**Synopsis :** {infos['overview']}")
+                st.write(f"**Durée :** {infos['runtime']} minutes")
+                st.write(f"**Genres :** {', '.join([genre['name'] for genre in infos['genres']])}")
+                st.write(f"**Pays d'origine :** {infos['origin_country'][0]}")
+                if len(videos) > 0:
+                    st.video(f"https://www.youtube.com/watch?v={videos[0]["key"]}")
+                else:
+                    st.write("Pas de bande annonce diponible pour ce film")
+
+    cols = st.columns(5)  # Créer 5 colonnes pour les 5 affiches
+    for i, movie in enumerate(films[10:15]):
+      with cols[i]:
+            st.image(f"https://image.tmdb.org/t/p/w500{movie['poster_path']}")
+            st.markdown(f"<h1 style='text-align: center;'>{movie['title']}</h1>", unsafe_allow_html=True)
+            # st.write(f':['tagline']')
+            st.write(f"Date de sortie : {movie['release_date']}")
+            st.write(f"Note spéctateur : {round(movie['vote_average'], 1)}/10")
+            
+            
+            if st.button(f"Voir les détails de {movie['title']}", key=movie['id']):
+                infos = details_films(movie['id'])
+                videos= video_films(movie['id'])   # Ajoutée
+                st.write(f"**Synopsis :** {infos['overview']}")
+                st.write(f"**Durée :** {infos['runtime']} minutes")
+                st.write(f"**Genres :** {', '.join([genre['name'] for genre in infos['genres']])}")
+                st.write(f"**Pays d'origine :** {infos['origin_country'][0]}")
+                if len(videos) > 0:
+                    st.video(f"https://www.youtube.com/watch?v={videos[0]["key"]}")
+                else:
+                    st.write("Pas de bande annonce diponible pour ce film")
+
+    cols = st.columns(5)  # Créer 5 colonnes pour les 5 affiches
+    for i, movie in enumerate(films[15 : 20]):
+      with cols[i]:
+            st.image(f"https://image.tmdb.org/t/p/w500{movie['poster_path']}")
+            st.markdown(f"<h1 style='text-align: center;'>{movie['title']}</h1>", unsafe_allow_html=True)
+            # st.write(f':['tagline']')
+            st.write(f"Date de sortie : {movie['release_date']}")
+            st.write(f"Note spéctateur : {round(movie['vote_average'], 1)}/10")
+            
+            
+            if st.button(f"Voir les détails de {movie['title']}", key=movie['id']):
+                infos = details_films(movie['id'])
+                videos= video_films(movie['id'])   # Ajoutée
+                st.write(f"**Synopsis :** {infos['overview']}")
+                st.write(f"**Durée :** {infos['runtime']} minutes")
+                st.write(f"**Genres :** {', '.join([genre['name'] for genre in infos['genres']])}")
+                st.write(f"**Pays d'origine :** {infos['origin_country'][0]}")
+                if len(videos) > 0:
+                    st.video(f"https://www.youtube.com/watch?v={videos[0]["key"]}")
+                else:
+                    st.write("Pas de bande annonce diponible pour ce film")
                 
 
 

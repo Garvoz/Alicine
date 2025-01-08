@@ -135,6 +135,8 @@ with st.sidebar:
             background-image: url('https://i.ibb.co/x29K7Nc/falling-popcorn.jpg');
             background-size: cover;
             background-position: center;
+            z-index:-1;
+            position:relative;
             height: 100%;
         }
         </style>

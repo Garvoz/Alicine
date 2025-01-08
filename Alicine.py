@@ -1,5 +1,4 @@
 import ast
-import base64
 import pandas as pd
 import pickle
 import requests
@@ -9,8 +8,6 @@ from streamlit_option_menu import option_menu
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 warnings.filterwarnings("ignore", category=FutureWarning)
-
-# マトリックス = "matrix" pour frimer pendant la démo
 
 
 #Utilisation de toute la largeur de la page:
@@ -114,18 +111,10 @@ def mes_recommendations(movie_title, nb_films=5):
         "Recommandations en français" : list(recommended_french_movie_ids)
     }
 
-#Encode base64 de l'image de fond sidebar en cache:
-def popcorn():
-    with open('./Images/falling_popcorn.jpeg', "rb") as f2:
-        encoded_image = base64.b64encode(f2.read()).decode()
-    return encoded_image
-
-# encoded_image = popcorn()
 
 # Mise en place de la sidebar:
 with st.sidebar:
-    st.sidebar.image('./Images/alicine_logo.jpeg', use_container_width=True)
-        
+    st.sidebar.image('./Images/alicine_logo.jpeg', use_container_width=True)        
     st.markdown(
         """
         <style> 
@@ -137,8 +126,7 @@ with st.sidebar:
         </style>
         """,
         unsafe_allow_html=True
-    )
-    #Mise en place de l'image de fond avec du css
+    )#Mise en place de l'image de fond avec du css
     
     page = option_menu(menu_title=None, options = ["Accueil", "Mieux nous connaitre", "Recherche personnalisée", "Films à l'affiche",  "Statistiques"])#Menu déroulant pour la navigation
         
@@ -167,7 +155,7 @@ if page == "Accueil":
     st.write("""          
            Grâce à cette application, venez découvrir notre système de recommandation de films, 
            """)
-    st.write("mais aussi les films à l'affiche et les statistiques intéressantes. ")
+    st.write("mais aussi les films à l'affiche et des statistiques intéressantes. ")
     st.write("Et surtout bonne navigation!")
 
 
@@ -183,24 +171,24 @@ if page == "Mieux nous connaitre":
         with col1:
             st.subheader("Nos Missions:")
             st.write("""
-                    - Diversité cinématographique : Nous vous proposons une programmation diversifiée, alliant cinéma francophone et anglophone ceci pour répondre aux besoin de tous nos spéctateurs.
-                    - Accessibilité : des projections proposeées pour répondre à tous les gouts et tous les âges. Nous vous proposons des séances aux familles, aux jeunes et aux cinéphiles agéris (confirmés).
-                    - Événements spéciaux : Nous organisons des avant-premières, des projections cultes. Et grâce à notre étroite collaboration avec 'Ecole et Cinéma' nous nous nous investissons dans la promotion des films Film Art et Essai et organisons aussi des 'Ciné-débats' et invitons des intervenants de qualité ")
+                    - Diversité cinématographique : Nous vous proposons une programmation diversifiée, alliant cinéma francophone et anglophone ceci pour répondre aux besoins de tous nos spéctateurs.
+                    - Accessibilité : des projections proposées pour répondre à tous les goûts et tous les âges. Nous proposons des séances aux familles, aux jeunes et aux cinéphiles aguérris.
+                    - Événements spéciaux : Nous organisons des avant-premières, des projections de films cultes. Et grâce à notre étroite collaboration avec 'École et Cinéma' nous nous investissons dans la promotion des Film d'Art et d'Essai et organisons aussi des 'Ciné-débats' avec des intervenants de qualité !
                     """)
     with col2:
       st.subheader("Nos engagements:")
       st.write("""
                 Le cinéma est bien plus qu'un divertissement, c'est un art qui rassemble, qui éveille les consciences et anime l'imagination. 
-                Nous sommes engagés à proposer une programation riche et variée, ceci en respectant nos engagements qui nous animent:
+                Nous sommes engagés à proposer une programmation riche et variée, ceci en respectant les engagements qui nous animent:
                 - Diversité culturelle : Nous nous engageons à offrir à nos spéctateurs une programmation éclectique qui couvre une large gamme de genre cinématographiques, tout en mettant en avant la production française, mais aussi des productions indépendantes.
-                - Accessibilté à la culture pour tous :  Le cinéma doit être accessible à tous, quel que soit l'age, la situation sociale ou l'handicape:                   
-                    - Nos salles ont été aménagées pour offrir l'accées pour les personnes à mobilité réduite,
+                - Accessibilté à la culture pour tous :  Le cinéma doit être accessible à tous, quel que soit l'âge, la situation sociale ou le handicap:                   
+                    - Nos salles ont été aménagées pour offrir l'accès pour les personnes à mobilité réduite,
                     - Nous organisons des séances avec sous titrage pour les malentendants, et en audiodescription pour les malvoyants
-                    - Nous appliquons des tarifs réduits pour les jeunes, les familles (n'oubliez pas de présenter votre carte famille nombreuse lors ed votre passage à la caisse) et personnes à revenus modestes.
+                    - Nous appliquons des tarifs réduits pour les jeunes, les familles (n'oubliez pas de présenter votre carte famille nombreuse lors de votre passage à la caisse) et les seniors.
                 - Soutien aux films indépendants : Nous soutenons activement les productions indépendantes et les jeunes talents. 
-                Nous croyons en la richesse des films qui sont issus de petite production mais qui portent des messages forts et créatifs.
+                Nous croyons en la richesse des films qui sont issus de petites productions et qui portent des messages forts et créatifs.
                 Nous organisons des projections spéciales et des rencontres avec des réalisateurs. 
-                Les jeunes cinéphiles participent également aux différents débats dans un espace conviviale est réservé dans ce sens.          
+                Les jeunes cinéphiles participent également aux différents débats dans un espace convivial et accessible.          
                 """) 
 
 
@@ -896,7 +884,7 @@ if page == "Statistiques":
     with col2:
         st.image("./Images/statistiques.jpeg",  use_container_width=True)
 
-    st.markdown("<h2 style='text-align: center;'>Voici quelques statistiques sorties de notre base de donnée Aliciné, nous espérons que vous les trouverez intéressantes! N'hésitez pas à nous faire part de vos souhait si vous souhaitez en apprendre plus sur la superbe sélection que nous avons faite pour vous! A vos stats!</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center;'>Voici quelques statistiques sorties de notre base de données Aliciné, nous espérons que vous les trouverez intéressantes! N'hésitez pas à nous faire part de vos souhait si vous souhaitez en apprendre plus sur la superbe sélection que nous avons faite pour vous! A vos stats!</h2>", unsafe_allow_html=True)
               
     with st.container(border=True):
         col1, col2 = st.columns(2)
@@ -909,11 +897,11 @@ if page == "Statistiques":
                      
             Nous pouvons voir que selon notre base de donnée Aliciné
                      
-            L'acteur ayant tourné le plus de film depuis 1970 est nontre 
+            L'acteur ayant tourné le plus de film depuis 1970 est notre 
                      
             cher M.Gérard Depardieu! 
                      
-            Un grand bravo à lui pour cette formaidable carrière!
+            Un grand bravo à lui pour cette formidable carrière!
                      
             On occultera volontairement le fait qu'il est le seul acteur 
                      

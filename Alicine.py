@@ -127,20 +127,21 @@ with st.sidebar:
     st.sidebar.image('./Images/alicine_logo.jpeg', use_container_width=True)
     
     # Vérification si l'image encodée existe
-    if encoded_image:
-        st.markdown(
+    st.markdown(
             f"""
             <style> 
             [data-testid="stSidebar"] > div:first-child {{
                 background-image: url("data:image/jpeg;base64,{encoded_image}");
                 background-size: cover;
+                background-position: center;
+                height: 100%;
+                position: absolute; 
+                z-index: -1;  /* Place l'image d'arrière-plan derrière tout le contenu */
             }}
             </style>
             """,
             unsafe_allow_html=True
-        )
-    else:
-        st.sidebar.write("L'image n'a pas pu être chargée.")#Mise en place de l'image de fond avec du css
+        )#Mise en place de l'image de fond avec du css
     
     page = option_menu(menu_title=None, options = ["Accueil", "Mieux nous connaitre", "Recherche personnalisée", "Films à l'affiche",  "Statistiques"])#Menu déroulant pour la navigation
         

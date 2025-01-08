@@ -134,8 +134,6 @@ with st.sidebar:
             [data-testid="stSidebar"] > div:first-child {{
                 background-image: url("data:image/jpeg;base64,{encoded_image}");
                 background-size: cover;
-                background-position: center;
-                height: 100%;
             }}
             </style>
             """,

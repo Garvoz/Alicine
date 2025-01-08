@@ -1,9 +1,6 @@
-ast
-base64
 pandas
 pickle
 requests
 scikit-learn
 streamlit
-option_menu
-warnings
+streamlit-option-menu

@@ -119,23 +119,29 @@ def popcorn():
     with open('./Images/falling_popcorn.jpeg', "rb") as f2:
         encoded_image = base64.b64encode(f2.read()).decode()
     return encoded_image
+
 # encoded_image = popcorn()
 
-
-
-#Mise en place de la sidebar:
+# Mise en place de la sidebar:
 with st.sidebar:
     st.sidebar.image('./Images/alicine_logo.jpeg', use_container_width=True)
+    
+    # Vérification si l'image encodée existe
+    
     st.markdown(
-    f"""
-    <style> 
-    [data-testid="stSidebar"] > div:first-child {{
-        background-image: url('https://github.com/Garvoz/Projet-2-Groupe-6/blob/main/Images/falling_popcorn.jpeg');
-        background-size: cover;
-    }}
-    </style>
-    """,
-    unsafe_allow_html=True)#Mise en place de l'image de fond avec du css
+        """
+        <style> 
+        [data-testid="stSidebar"] > div:first-child {
+            background-image: url('https://i.ibb.co/x29K7Nc/falling-popcorn.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100%;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+    #Mise en place de l'image de fond avec du css
     
     page = option_menu(menu_title=None, options = ["Accueil", "Mieux nous connaitre", "Recherche personnalisée", "Films à l'affiche",  "Statistiques"])#Menu déroulant pour la navigation
         

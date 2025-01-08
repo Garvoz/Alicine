@@ -119,7 +119,7 @@ def popcorn():
     with open('./Images/falling_popcorn.jpeg', "rb") as f2:
         encoded_image = base64.b64encode(f2.read()).decode()
     return encoded_image
-encoded_image = popcorn()
+# encoded_image = popcorn()
 
 
 
@@ -130,7 +130,7 @@ with st.sidebar:
     f"""
     <style> 
     [data-testid="stSidebar"] > div:first-child {{
-        background-image: url("data:image/jpeg;base64,{encoded_image}");
+        background-image: url('https://github.com/Garvoz/Projet-2-Groupe-6/blob/main/Images/falling_popcorn.jpeg');
         background-size: cover;
     }}
     </style>

@@ -816,7 +816,7 @@ if page == "Films à l'affiche":
                 st.write(f"**Genres :** {', '.join([genre['name'] for genre in infos['genres']])}")
                 st.write(f"**Pays d'origine :** {infos['origin_country'][0]}")
                 if len(videos) > 0:
-                    st.video(f"https://www.youtube.com/watch?v={videos[0]["key"]}")
+                    st.video(f"https://www.youtube.com/watch?v={videos[0]['key']}")
                 else:
                     st.write("Pas de bande annonce diponible pour ce film")
 
@@ -838,7 +838,7 @@ if page == "Films à l'affiche":
                 st.write(f"**Genres :** {', '.join([genre['name'] for genre in infos['genres']])}")
                 st.write(f"**Pays d'origine :** {infos['origin_country'][0]}")
                 if len(videos) > 0:
-                    st.video(f"https://www.youtube.com/watch?v={videos[0]["key"]}")
+                    st.video(f"https://www.youtube.com/watch?v={videos[0]['key']}")
                 else:
                     st.write("Pas de bande annonce diponible pour ce film")
 
@@ -860,7 +860,7 @@ if page == "Films à l'affiche":
                 st.write(f"**Genres :** {', '.join([genre['name'] for genre in infos['genres']])}")
                 st.write(f"**Pays d'origine :** {infos['origin_country'][0]}")
                 if len(videos) > 0:
-                    st.video(f"https://www.youtube.com/watch?v={videos[0]["key"]}")
+                    st.video(f"https://www.youtube.com/watch?v={videos[0]['key']}")
                 else:
                     st.write("Pas de bande annonce diponible pour ce film")
 
@@ -882,7 +882,7 @@ if page == "Films à l'affiche":
                 st.write(f"**Genres :** {', '.join([genre['name'] for genre in infos['genres']])}")
                 st.write(f"**Pays d'origine :** {infos['origin_country'][0]}")
                 if len(videos) > 0:
-                    st.video(f"https://www.youtube.com/watch?v={videos[0]["key"]}")
+                    st.video(f"https://www.youtube.com/watch?v={videos[0]['key']}")
                 else:
                     st.write("Pas de bande annonce diponible pour ce film")
                 

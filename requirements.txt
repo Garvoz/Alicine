@@ -3,7 +3,7 @@ base64
 pandas
 pickle
 requests
-NearestNeighbors
+scikit-learn
 streamlit
 option_menu
 warnings

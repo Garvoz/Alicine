@@ -1,5 +1,5 @@
 pandas
-pickle
+pickle-mixin
 requests
 scikit-learn
 streamlit

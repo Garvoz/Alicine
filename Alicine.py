@@ -125,19 +125,14 @@ def popcorn():
 # Mise en place de la sidebar:
 with st.sidebar:
     st.sidebar.image('./Images/alicine_logo.jpeg', use_container_width=True)
-    
-    # Vérification si l'image encodée existe
-    
+        
     st.markdown(
         """
         <style> 
-        [data-testid="stSidebar"] > div:first-child {
+        [data-testid="stSidebar"]{
             background-image: url('https://i.ibb.co/x29K7Nc/falling-popcorn.jpg');
             background-size: cover;
             background-position: center;
-            z-index:-1;
-            position:relative;
-            height: 100%;
         }
         </style>
         """,

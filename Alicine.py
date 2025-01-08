@@ -115,7 +115,6 @@ def mes_recommendations(movie_title, nb_films=5):
     }
 
 #Encode base64 de l'image de fond sidebar en cache:
-@st.cache_data
 def popcorn():
     with open('./Images/falling_popcorn.jpeg', "rb") as f2:
         encoded_image = base64.b64encode(f2.read()).decode()

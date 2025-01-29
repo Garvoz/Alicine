@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./images/logo.png" width="300">
+  <img src="./Images/logo.png" width="300">
 </p>
 <h1 align="center">Projet 2 : Système de recommandation de films</h1>
 
@@ -32,10 +32,9 @@ Cette application sera mise à disposition des clients du cinéma afin de leur p
 Ressources
 
 Les données sont disponibles sur le site IMDb, réparties en plusieurs tables (films, acteurs, réalisateurs, notes, etc.).
-
-    [Documentation des colonnes et tables](https://developer.imdb.com/non-commercial-datasets/)
-    [Datasets IMDb](https://datasets.imdbws.com/)
-    [Dataset complémentaire TMDB](https://drive.google.com/file/d/1VB5_gl1fnyBDzcIOXZ5vUSbCY68VZN1v/view)
+1. [Documentation des colonnes et tables](https://developer.imdb.com/non-commercial-datasets/)
+2. [Datasets IMDb](https://datasets.imdbws.com/)
+3. [Dataset complémentaire TMDB](https://drive.google.com/file/d/1VB5_gl1fnyBDzcIOXZ5vUSbCY68VZN1v/view)
 
 
 ---

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./Images/logo.png" width="300">
+  <img src="./Images/logo.lpeg" width="300">
 </p>
 <h1 align="center">Projet 2 : Système de recommandation de films</h1>
 

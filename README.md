@@ -57,7 +57,7 @@ Les données sont disponibles sur le site IMDb, réparties en plusieurs tables (
 2. [Traitement des données pour répondre aux KPI](./notebook/df_powerBI.ipynb)  
 3. [Développement d'un tableau de bord]
 4. [Mise en place d'une application streamlit](./Alicine.py)
-5. [Mise en ligne de l'application]
+5. [Mise en ligne de l'application](https://alicine.streamlit.app/)
 5. [Mise en place d'un PowerPoint de présentation]
 
 ---

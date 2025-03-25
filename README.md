@@ -55,8 +55,8 @@ Les données sont disponibles sur le site IMDb, réparties en plusieurs tables (
 
 1. [Analyse et Prétraitement des Données](./notebook/Premier_nettoyage.ipynb)  
 2. [Traitement des données pour répondre aux KPI](./notebook/df_powerBI.ipynb)  
-3. [Développement d'un tableau de bord]
-4. [Mise en place d'une application streamlit](./Alicine.py)
+3. [Développement d'un tableau de bord](./Dashboard_Aliciné.pdf)
+4. [Mise en place d'une application streamlit](./pages_streamlit_AliCine.pdf)
 5. [Mise en ligne de l'application](https://alicine.streamlit.app/)
 5. [Mise en place d'un PowerPoint de présentation]
 

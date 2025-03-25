@@ -148,15 +148,19 @@ if page == "Accueil":
     col1, col2, col3 = st.columns([2, 10, 2])#Code pour donner du poid à une colonne plus qu'aux autres
     with col2:
         st.image("./Images/accueil.jpeg",  use_container_width=True)
-    st.subheader("Votre cinéma se modernise et entre dans l'ère numérique !") 
+    st.subheader("Bienvenue dans votre cinéma nouvelle génération ! 🎬✨") 
     st.write("""          
-           Nous sommes heureux de vous offrir une sélection de films variée et de qualité, dans un cadre convivial et chaleureux. 
-           """)
+           Votre cinéma se modernise et fait un bond dans l’ère numérique ! Désormais, plus besoin de longues hésitations devant l’affiche : laissez-vous guider par notre système de recommandation intelligent pour trouver le film qui correspond parfaitement à vos envies.
+             """)
     st.write("""          
-           Grâce à cette application, venez découvrir notre système de recommandation de films, 
+           Que vous soyez amateur de frissons, de grandes histoires émouvantes, de comédies légères ou d’aventures spectaculaires, nous avons sélectionné pour vous des films variés et de qualité, à découvrir dans un cadre toujours aussi convivial et chaleureux. 
            """)
-    st.write("mais aussi les films à l'affiche et des statistiques intéressantes. ")
-    st.write("Et surtout bonne navigation!")
+    st.write("""
+            Mais ce n’est pas tout ! Cette application vous permet également de consulter les films à l’affiche, d’explorer des statistiques surprenantes sur le monde du cinéma et d’affiner vos choix en toute simplicité.
+             """)
+    st.write("""
+             Alors, installez-vous confortablement, laissez-vous guider et surtout… bonne navigation et bon film ! 🍿🎥
+             """)
 
 
 
@@ -166,29 +170,45 @@ if page == "Mieux nous connaitre":
     col1, col2, col3 = st.columns([2, 10, 2])
     with col2:
         st.image("./Images/connaitre.jpg",  use_container_width=True)
+
+    st.write("Parce que le cinéma est bien plus qu’un simple divertissement, nous avons à cœur de vous offrir une expérience cinématographique unique, riche et accessible à tous. Découvrez nos missions et engagements qui guident notre passion au quotidien.")
+
     with st.container(border=True):
         col1, col2 = st.columns(2)
         with col1:
-            st.subheader("Nos Missions:")
-            st.write("""
-                    - Diversité cinématographique : Nous vous proposons une programmation diversifiée, alliant cinéma francophone et anglophone ceci pour répondre aux besoins de tous nos spéctateurs.
-                    - Accessibilité : des projections proposées pour répondre à tous les goûts et tous les âges. Nous proposons des séances aux familles, aux jeunes et aux cinéphiles aguérris.
-                    - Événements spéciaux : Nous organisons des avant-premières, des projections de films cultes. Et grâce à notre étroite collaboration avec 'École et Cinéma' nous nous investissons dans la promotion des Film d'Art et d'Essai et organisons aussi des 'Ciné-débats' avec des intervenants de qualité !
+            st.subheader("🎥 Nos missions")
+            st.write("""                    
+
+🔹 Diversité cinématographique
+Nous vous proposons une programmation variée, mêlant cinéma francophone et anglophone, mais aussi films indépendants et œuvres du monde entier. Notre objectif ? Répondre aux attentes de tous nos spectateurs, qu’ils soient amateurs de blockbusters, d’auteurs visionnaires ou de classiques intemporels.
+
+🔹 Accessibilité pour tous
+Notre programmation s’adapte à tous les âges et tous les goûts : séances dédiées aux familles, aux jeunes, aux passionnés du 7ᵉ art et même aux curieux en quête de nouvelles découvertes cinématographiques.
+
+🔹 Événements spéciaux
+Nous aimons faire vivre le cinéma autrement ! Avant-premières, projections de films cultes, séances spéciales en partenariat avec École et Cinéma, sans oublier nos Ciné-débats, où des intervenants de qualité viennent échanger et enrichir votre expérience de spectateur.
                     """)
     with col2:
-      st.subheader("Nos engagements:")
+      st.subheader("🎬 Nos engagements")
       st.write("""
-                Le cinéma est bien plus qu'un divertissement, c'est un art qui rassemble, qui éveille les consciences et anime l'imagination. 
-                Nous sommes engagés à proposer une programmation riche et variée, ceci en respectant les engagements qui nous animent:
-                - Diversité culturelle : Nous nous engageons à offrir à nos spéctateurs une programmation éclectique qui couvre une large gamme de genre cinématographiques, tout en mettant en avant la production française, mais aussi des productions indépendantes.
-                - Accessibilté à la culture pour tous :  Le cinéma doit être accessible à tous, quel que soit l'âge, la situation sociale ou le handicap:                   
-                    - Nos salles ont été aménagées pour offrir l'accès pour les personnes à mobilité réduite,
-                    - Nous organisons des séances avec sous titrage pour les malentendants, et en audiodescription pour les malvoyants
-                    - Nous appliquons des tarifs réduits pour les jeunes, les familles (n'oubliez pas de présenter votre carte famille nombreuse lors de votre passage à la caisse) et les seniors.
-                - Soutien aux films indépendants : Nous soutenons activement les productions indépendantes et les jeunes talents. 
-                Nous croyons en la richesse des films qui sont issus de petites productions et qui portent des messages forts et créatifs.
-                Nous organisons des projections spéciales et des rencontres avec des réalisateurs. 
-                Les jeunes cinéphiles participent également aux différents débats dans un espace convivial et accessible.          
+               
+Le cinéma est un art qui rassemble, fait réfléchir et inspire. Nous nous engageons à proposer une programmation qui reflète ces valeurs, à travers plusieurs axes forts :
+
+🔹 Une diversité culturelle assumée
+Nous mettons en avant une programmation éclectique et audacieuse, mêlant productions françaises, films internationaux et perles du cinéma indépendant. Nous voulons vous offrir un large panorama du 7ᵉ art, où chaque spectateur trouve son bonheur.
+
+🔹 L’accessibilité à la culture pour tous
+Le cinéma doit être un plaisir universel et inclusif :
+- Nos salles sont adaptées aux personnes à mobilité réduite.
+- Nous proposons des séances avec sous-titres pour les malentendants et en audiodescription pour les malvoyants.
+- Des tarifs réduits sont appliqués pour les jeunes, les familles (pensez à présenter votre carte famille nombreuse !) et les seniors, afin que chacun puisse profiter du grand écran.
+
+🔹 Un soutien fort au cinéma indépendant
+Parce que les jeunes talents et les petites productions méritent aussi la lumière, nous défendons activement le cinéma indépendant à travers des projections spéciales et des rencontres avec les réalisateurs. Ces moments d’échange permettent aux cinéphiles de plonger dans l’univers des créateurs et d’enrichir leur regard sur le 7ᵉ art.
+
+🎞️ Notre engagement est simple : faire du cinéma un lieu de partage, d’émotion et de découverte. Que vous veniez pour une grande avant-première, un chef-d’œuvre du passé ou une pépite méconnue, nous avons hâte de vous accueillir dans nos salles.
+
+📽️ À très bientôt pour une séance inoubliable !          
                 """) 
 
 
@@ -781,9 +801,6 @@ if page == "Recherche personnalisée":
 # Mise en place de la page 'Films à l'affiche':
 if page == "Films à l'affiche":
     st.markdown("<h1 style='text-align: center;'>Films à l'affiche en ce moment</h1>", unsafe_allow_html=True)# "Les films populaires"
-    col1, col2, col3 = st.columns([2, 10, 2])#Code pour donner du poid à une colonne plus qu'aux autres
-    with col2:
-        st.image("./Images/affiche.jpg",  use_container_width=True)
 
     films = films_populaire()
 
@@ -893,19 +910,37 @@ if page == "Statistiques":
 
         with col2:
             st.markdown("""<h1 style='text-align: center;'> 
-            COCORICO!!
-                     
-            Nous pouvons voir que selon notre base de donnée Aliciné
-                     
-            L'acteur ayant tourné le plus de film depuis 1970 est notre 
-                     
-            cher M.Gérard Depardieu! 
-                     
-            Un grand bravo à lui pour cette formidable carrière!
-                     
-            On occultera volontairement le fait qu'il est le seul acteur 
-                     
-            français dans ce top 7...
+             Ah, voici un classement qui sent bon les plateaux de tournage enchaînés et les scénarios récités en pilote automatique ! 
+                        
+        En tête du classement, Gérard Depardieu, véritable force de la nature du cinéma français, qui a probablement joué dans 
+                        
+        plus de films qu'il n'a dégusté de bouteilles de vin (et pourtant, le défi est de taille).
+
+        Derrière lui, Bruce Willis et Nicolas Cage, les infatigables vétérans d’Hollywood. Willis, qui a longtemps enchaîné 
+                        
+        les rôles musclés avant de se spécialiser dans le "je suis fatigué mais j’accepte le chèque", et Cage, dont la 
+                        
+        filmographie semble dictée par un générateur aléatoire de scénarios. Une chose est sûre, il a plus de films 
+                        
+        à son actif que de visages expressifs dans ses derniers rôles.
+
+        Ensuite, nous avons Samuel L. Jackson, l’homme qui a prononcé plus de fois le mot "motherf***er" à l’écran 
+                        
+        que n’importe quel être humain sur cette planète. Peu importe le film, peu importe le rôle, s'il y a une place pour lui, il est partant.
+
+        Puis arrive Robert De Niro, qui alterne entre chef-d’œuvre et cachet facile, mais qui a quand même réussi à garder un certain standing, 
+                        
+        même en jouant un grand-père déchaîné.
+
+        Enfin, Michael Caine et Morgan Freeman, les deux sages de cette liste. L’un prête sa voix à des narrations iconiques, 
+                        
+        tandis que l’autre joue le mentor parfait à chaque génération d’acteurs. Entre conseils avisés et rôles sur mesure, 
+                        
+        ils sont la caution "prestige" de notre classement.
+
+        Bref, ces acteurs ont tous un point commun : ils n'ont jamais dit "non" à un scénario, et leur filmographie est aussi vaste 
+                        
+        que leur compte en banque. Respect éternel à ces travailleurs du septième art, capables de passer d’un chef-d'œuvre à un nanar sans sourciller.
 
             """, unsafe_allow_html=True)
 
@@ -913,25 +948,23 @@ if page == "Statistiques":
         col1, col2 = st.columns(2)
         with col1:
             st.markdown("""<h1 style='text-align: center;'> 
-            Ah le Parrain! 
-                     
-            Que de scènes emblématiques! C'est donc le film qui recoit 
+            Ah, Le Parrain ! Quelle claque cinématographique ! 
                         
-            la meilleure note de notre sélection.
-                     
-            On remarquera que les 4 meilleures notes sont pour 4 drames, 
+            Scènes cultes, dialogues ciselés, Marlon Brando en patriarche inoubliable… 
                         
-            ce qui prouve bien notre amour de la tristesse et la désolation. 
-                  
-            Haut les coeurs!
-
-            Pas de films français à se mettre sous la dent dans ce top.
+            Il rafle donc la meilleure note de notre sélection. Petite observation : les quatre premiers films de ce classement sont des drames. 
                         
-            Quel dommage !
+            Preuve, s'il en fallait une, que nous adorons être bouleversés, pleurer en douce devant l’écran et ressentir toute la détresse du monde… 
+                        
+            Joyeux programme, n’est-ce pas ? Heureusement, La Ligne Verte apporte une touche de fantastique et Pulp Fiction vient dynamiter l’ensemble 
+                        
+            avec son cocktail déjanté de violence et d’humour noir.
 
-            Surtout quand on connait l'extraordinaire qualité de notre cinéma,
-
-            spécialement dans la catégorie "drames"...  
+            Et nos films français, alors ? Portés disparus dans ce top ! 
+                        
+            Pourtant, entre nos chefs-d'œuvre du drame et notre talent pour raconter la misère humaine, 
+                        
+            on aurait eu de quoi rivaliser. Allez, il faudra revoir les votes !  
 
             """, unsafe_allow_html=True)
 
@@ -945,17 +978,44 @@ if page == "Statistiques":
 
         with col2:
             st.markdown("""<h1 style='text-align: center;'> 
-            Place aux rides et à l'expérience !!!
+            Place aux rides et à l’expérience !
+
+            On le voit bien : les acteurs prennent de l’âge au fil du temps, mais les films, eux, restent fidèles à leur bon vieux format 
                         
-            On constate que les acteurs prennent de l'âge au fil du temps, 
+            d’environ 100 minutes. Comme si Hollywood avait trouvé la recette parfaite pour ne pas trop fatiguer nos rétines, 
                         
-            en revanche les films restent fidèles à leur format de 100 mins environ. 
+            tout en nous laissant le temps de savourer popcorn et suspense.
+
+            En revanche, côté casting, les producteurs misent de plus en plus sur des stars "vintage", ces légendes du grand écran qui 
                         
-            Les producteurs misent beaucoup plus sur des stars "vintage ". 
-                        
-            Un choix qui prouve qu'en cinéma comme en vin, l'âge a du goût. 
+            semblent se bonifier avec le temps. Un choix qui prouve qu’en cinéma, comme en bon vin, l’âge a du goût… et du cachet !
 
             """, unsafe_allow_html=True)
                      
         
-  
+    with st.container(border=True):
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("""<h1 style='text-align: center;'> 
+            Un menu bien équilibré !
+
+            Sans grande surprise, les drames et les comédies occupent le haut du panier : entre les larmes et les fous rires, 
+                        
+            on aime visiblement être secoués dans tous les sens. Les "autres genres" se faufilent aussi dans le top, parce qu’après tout, 
+                        
+            il faut bien une catégorie fourre-tout pour tout ce qui ne rentre pas dans les cases !
+
+            L’action et l’horreur suivent à bonne distance : trop de muscles ou trop de frayeurs, peut-être ? Quant au thriller, 
+                        
+            il fait cavalier seul en dominant largement la course… Normal, entre suspense haletant, trahisons et rebondissements, 
+                        
+            on adore se faire manipuler. Bref, le cinéma, c’est un peu comme une bonne recette : 
+                        
+            une pincée de drame, une dose d’humour, un soupçon de frissons… et un grand bol de tension !
+
+            """, unsafe_allow_html=True)
+            
+
+        with col2:
+            st.image("./Images/genres.png",  use_container_width=True)
+            

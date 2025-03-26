@@ -58,7 +58,7 @@ Les données sont disponibles sur le site IMDb, réparties en plusieurs tables (
 3. [Développement d'un tableau de bord](./Dashboard_Aliciné.pdf)
 4. [Mise en place d'une application streamlit](./pages_streamlit_AliCine.pdf)
 5. [Mise en ligne de l'application](https://alicine.streamlit.app/)
-5. [Mise en place d'un PowerPoint de présentation](./Le cinéma dans la Creuse.pdf)
+5. [Mise en place d'un PowerPoint de présentation](./Le%20cinéma%20dans%20la%20Creuse.pdf)
 
 ---
 

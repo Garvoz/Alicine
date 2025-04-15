@@ -147,7 +147,7 @@ if page == "Accueil":
     st.markdown("<h1 style='text-align: center;'>Bienvenue dans l'univers AliCiné !</h1>", unsafe_allow_html=True)#Code HTML et CSS pour centrer un texte, sera utilisé souvent
     col1, col2, col3 = st.columns([2, 10, 2])#Code pour donner du poid à une colonne plus qu'aux autres
     with col2:
-        st.image("./Images/accueil.jpeg",  use_container_width=True)
+        st.image("./Images/alicine.png",  use_container_width=True)
     st.subheader("Bienvenue dans votre cinéma nouvelle génération ! 🎬✨") 
     st.write("""          
            Votre cinéma se modernise et fait un bond dans l’ère numérique ! Désormais, plus besoin de longues hésitations devant l’affiche : laissez-vous guider par notre système de recommandation intelligent pour trouver le film qui correspond parfaitement à vos envies.
